@@ -23,7 +23,7 @@ learning_curve_error_resampling:
   draws_per_subset_size: 200
   source: Figure_13_learning_curve_guidance_script.py
 synthetic:
-  seed: 42
+  seed: 20261009
 archived_script_constants:
   run_adaptive_rejection_budget.py:
     SEED: 20260701

@@ -1,10 +1,10 @@
 # Current and historical provenance
 
-`manifest.csv` hashes the 36 current supplementary CSVs. `manifest_zenodo_v5.csv`
+`manifest.csv` hashes the 36 current supplementary CSVs. `manifest_previous_release_v5.csv`
 and `changes_md5.csv` describe earlier package/correction stages and are historical
 records; their original MD5 statements are not current-package checksums.
 `README_original.txt` records the archived package's original title and layout.
-`superseded_zenodo_v5/` contains replaced tables, not current results.
+`previous_release_v5/` contains replaced tables, not current results.
 `legacy_scripts/` and corrected historical snapshots retain computational
 statements with the audited English commentary translation. Confidential source
 workbooks, identity mappings and private caches are external and never copied here.

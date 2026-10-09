@@ -10,4 +10,4 @@ With an authorized local dataset, use `paper/reproduce_from_private_data.py`.
 Historical scripts preserve numerical logic; paths are historical and may require
 their documented research layout. Use the reusable package for portable runs.
 Corrected snapshots retain the Methods gas formula and risk tie rule; archived
-CSV versions are in `superseded_zenodo_v5/`. Figures use display numbering.
+CSV versions are in `previous_release_v5/`. Figures use display numbering.

@@ -1,8 +1,21 @@
-# Changes relative to the archived Zenodo v5 package
+# Changelog
+
+## 0.1.1 — 2026-10-09
+
+Documentation, archive naming and metadata cleanup. Computational code and
+numerical data are unchanged from 0.1.0. The existing 0.1.0 tag is preserved.
+
+- Renamed the change log and previous-release archive/manifest paths.
+- Rewrote the landing README and moved the original verification/resource notes
+  verbatim to `docs/reproducibility.md`.
+- Corrected the synthetic-seed metadata to 20261009 without changing the generator.
+- Updated software/citation version metadata to 0.1.1.
+
+## 0.1.0 — original computational release
 
 The current manuscript has been updated to the corrected A reference results.
-Original Online Resource files and Zenodo were not modified. Superseded public
-CSV versions are retained in `paper/superseded_zenodo_v5/`.
+Original Online Resource files and the previous public release (v5) were not modified. Superseded public
+CSV versions are retained in `paper/previous_release_v5/`.
 
 1. Gas proxy: fixed qL=.39 mg/g and PL=7.60 MPa, no TOC capacity scaling, no
    free-gas .01 factor, porosity percentage divided by 100 without a floor.
