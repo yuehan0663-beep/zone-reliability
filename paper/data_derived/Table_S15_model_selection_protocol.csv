@@ -1,0 +1,7 @@
+target,validation_scheme,empirical_best_model_in_screening,weighted_MAE,pooled_R2,Spearman,fixed_downstream_backbone
+TOC,random,ExtraTrees,0.232,0.452,0.665,ExtraTrees
+TOC,LOWO,SVR_RBF,0.303,0.116,0.104,ExtraTrees
+TOC,LOZO,ExtraTrees,0.458,-0.786,0.060,ExtraTrees
+total gas,random,CatBoost,0.317,0.396,0.583,RF
+total gas,LOWO,RF,0.390,0.129,0.159,RF
+total gas,LOZO,RF,0.399,0.092,0.252,RF

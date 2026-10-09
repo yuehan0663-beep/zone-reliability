@@ -1,0 +1,8 @@
+{
+  "q_L_mg_g": 0.39,
+  "P_L_MPa": 7.6,
+  "S_g": 0.5,
+  "Z": 0.9,
+  "geothermal_gradient_C_per_m": 0.03,
+  "rho_rock_t_m3": 2.65
+}

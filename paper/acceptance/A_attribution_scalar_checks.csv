@@ -1,0 +1,9 @@
+gate,anchor,expected,actual,tolerance,passed
+23,TOC full LOWO pairwise Spearman,0.948,0.9483560794044666,0.001,True
+24,total_gas full LOWO pairwise Spearman,0.837,0.8372673480365788,0.001,True
+25,TOC full LOZO pairwise Spearman,0.851,0.850815850815851,0.001,True
+26,total_gas full LOZO pairwise Spearman,0.497,0.4965034965034966,0.001,True
+27,TOC logs-only LOWO pairwise Spearman,0.933,0.9328629032258065,0.001,True
+27,total_gas logs-only LOWO pairwise Spearman,0.943,0.943076923076923,0.001,True
+28,TOC logs_only LOZO pooled R2,-0.361,-0.361440099128014,0.001,True
+28,TOC full_logs_plus_descriptors LOZO pooled R2,-0.786,-0.786092051977473,0.001,True

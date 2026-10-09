@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Please cite the associated paper and this software when using this workflow."
+title: "A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Ordos Basin, China"
+type: software
+repository-code: "https://github.com/yuehan0663-beep/zone-reliability"
+version: 0.1.0
+date-released: 2026-10-09
+license: MIT
+abstract: "Leakage-controlled validation, attribution, uncertainty, rejection and within-zone recalibration for well-log regression. Associated manuscript targets Computers & Geosciences."
+keywords:
+  - well logs
+  - structural zones
+  - conformal prediction
+  - reliability
+authors:
+  - family-names: Yue
+    given-names: Han
+  - family-names: Huang
+    given-names: Hexin
+  - family-names: Li
+    given-names: Rongxi
+  - family-names: Cai
+    given-names: Siyi

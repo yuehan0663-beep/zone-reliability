@@ -1,0 +1,9 @@
+﻿parameter,value,unit,source,gold_label_used,note
+q_L,0.39,mg/g,W148 moisture-equilibrated 30 C Langmuir anchor; literature/DOI pending author confirmation,N,TOC only scales adsorption capacity during proxy construction; gold total gas is not used for parameter fitting.
+P_L,7.6,MPa,W148 moisture-equilibrated 30 C Langmuir anchor; literature/DOI pending author confirmation,N,Used in Langmuir adsorption term.
+pressure,pressure_coeff * depth_md * 0.0098,MPa,locked proxy construction script,N,pressure_coeff is the corrected present-day pressure coefficient.
+S_g,0.5,fraction,locked free-gas proxy assumption,N,Conservative gas saturation proxy.
+Z,0.9,dimensionless,locked free-gas proxy assumption,N,Gas compressibility factor for rough formation-volume conversion.
+geothermal_gradient,0.03,C/m,locked free-gas proxy assumption,N,Temperature model uses 293.15 K plus gradient times depth.
+porosity_missing,zone median,rule,locked proxy construction script,N,Imputed internally and flagged; not tuned on gas labels.
+G_total_proxy,G_ads + G_free,m3/t proxy,locked proxy construction script,N,C1-C4 recalibration aligns proxy to measured total gas inside training folds only.

@@ -1,0 +1,10 @@
+target,proxy,zone,zone_en,wells,best_method,best_MAE,zone_mean_MAE,relative_MAE_improvement_vs_zonemean_pct,improvement_ci_low_pct,improvement_ci_high_pct,benefit_class,small_sample_note
+TOC,schmoker_toc_proxy,Central,Central,9,C4_small_ridge,0.12407,0.294299,57.8422,42.9681,70.5382,CI-robust,
+TOC,schmoker_toc_proxy,North,North,8,C2_affine,0.163105,0.212196,23.1347,3.91831,34.8896,CI-robust,
+TOC,schmoker_toc_proxy,South,South,15,C4_small_ridge,0.102493,0.247154,58.5306,49.29,67.6245,CI-robust,
+TOC,passey_toc_proxy,Central,Central,9,C4_small_ridge,0.125388,0.288435,56.5283,38.2855,71.3687,CI-robust,
+TOC,passey_toc_proxy,North,North,8,C2_affine,0.171507,0.21455,20.0623,-2.51584,33.0326,directional only,
+TOC,passey_toc_proxy,South,South,15,C4_small_ridge,0.106351,0.249583,57.3885,45.8721,68.0397,CI-robust,
+total_gas,gas_total_proxy_quant,Central,Central,11,C4_small_ridge,0.158708,0.23687,32.998,12.4545,49.4354,CI-robust,
+total_gas,gas_total_proxy_quant,North,North,5,C1_offset,0.307873,0.332624,7.44127,-30.7161,24.7392,directional only,
+total_gas,gas_total_proxy_quant,South,South,10,C4_small_ridge,0.127079,0.211122,39.8075,18.9356,54.5894,CI-robust,

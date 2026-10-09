@@ -1,0 +1,10 @@
+target,proxy,zone,zone_en,n,wells,spearman_proxy_gold,affine_slope,affine_intercept,drift_type
+TOC,schmoker_toc_proxy,Central,Central,54,9,0.867828,3.13885,0.878371,scale_shift
+TOC,schmoker_toc_proxy,North,North,48,8,0.683096,2.57302,0.963933,scale_shift
+TOC,schmoker_toc_proxy,South,South,90,15,0.918935,2.94401,1.34212,scale_shift
+TOC,passey_toc_proxy,Central,Central,52,9,0.858706,0.314554,0.922093,scale_shift
+TOC,passey_toc_proxy,North,North,47,8,0.650916,0.260736,0.993363,scale_shift
+TOC,passey_toc_proxy,South,South,84,15,0.921708,0.303653,1.37655,scale_shift
+total_gas,gas_total_proxy_quant,Central,Central,66,11,0.714143,1.17356,-1.26821,location_shift
+total_gas,gas_total_proxy_quant,North,North,30,5,0.385984,1.32554,-1.18419,relationship_shift_or_weak_proxy
+total_gas,gas_total_proxy_quant,South,South,60,10,0.710697,0.848109,-0.921304,location_shift

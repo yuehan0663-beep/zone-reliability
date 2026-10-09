@@ -1,0 +1,7 @@
+target,cv_scheme,method,reject_frac,baseline_MAE_same_eligible_units,risk_MAE_20pct_same_eligible_units,risk_improvement_pct_same_eligible_units,random_improvement_mean_pct,random_improvement_p95_pct,empirical_p_random_ge_risk,interpretation
+toc_pct,LOWO,global,0.2,0.3375886753069894,0.3421173425220595,-1.341474861664712,0.0031917795612335,1.96601988746208,0.883,risk_not_above_true_random
+toc_pct,LOWO,risk_inflated,0.2,0.3375886753069894,0.3356560089753006,0.5724914587052635,-0.0096962247622979,1.99533887208578,0.3074,risk_not_above_true_random
+toc_pct,LOWO,zone_conditional,0.2,0.3375886753069894,0.3421173425220595,-1.341474861664712,-0.0162446055201497,1.922948418242677,0.8672,risk_not_above_true_random
+total_gas_m3_t,LOWO,global,0.2,0.3302115711860436,0.308321385417873,6.62913952092778,-0.0143043176209694,3.546220944660321,0.0008,risk_above_true_random
+total_gas_m3_t,LOWO,risk_inflated,0.2,0.3302115711860436,0.3226028678191687,2.3041904132996343,0.0072778085743742,3.6384898114372928,0.1456,risk_not_above_true_random
+total_gas_m3_t,LOWO,zone_conditional,0.2,0.3302115711860436,0.308321385417873,6.62913952092778,-0.0251582371580579,3.5098404736851725,0.001,risk_above_true_random

@@ -1,0 +1,7 @@
+target,zone,n_wells,coverage,coverage_threshold,support_ok,skill_class,local_correction_robust,action
+toc_pct,Central,9,0.8333333333333334,0.8,False,skill_CI_robust,True,recalibrate locally
+toc_pct,North,8,0.75,0.8,False,skill_directional,True,recalibrate locally
+toc_pct,South,15,0.8537037037037037,0.8,False,skill_CI_robust,True,recalibrate locally
+total_gas_m3_t,Central,11,0.9595959595959596,0.8,False,skill_CI_robust,True,recalibrate locally
+total_gas_m3_t,North,5,0.6777777777777778,0.8,False,skill_directional,False,acquire more data
+total_gas_m3_t,South,10,0.9138888888888889,0.8,False,skill_CI_robust,True,recalibrate locally

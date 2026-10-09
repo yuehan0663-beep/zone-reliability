@@ -1,0 +1,7 @@
+﻿variable,error_metric,n,spearman_rho,p_value
+measured depth,signed residual,291,-0.28455897033830213,7.985017543841958e-07
+measured depth,absolute error,291,0.35537304783563595,4.3473996126605573e-10
+bulk density,signed residual,233,0.2278624636179764,0.0004554180004648918
+bulk density,absolute error,233,-0.12964617889140606,0.04807893264948894
+maximum burial proxy,signed residual,116,-0.013383017074206706,0.8866180246627998
+maximum burial proxy,absolute error,116,-0.1082670609607283,0.24733451222406572

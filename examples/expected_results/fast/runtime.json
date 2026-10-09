@@ -1,0 +1,28 @@
+{
+  "mode": "fast",
+  "seconds": 191.11358279999695,
+  "rows": 258,
+  "wells": 43,
+  "seed": 20261009,
+  "models": 5,
+  "synthetic_only": true,
+  "outputs": [
+    "attribution_perfold",
+    "attribution_stability",
+    "conformal_coverage",
+    "conformal_folds",
+    "conformal_predictions",
+    "decision_matrix",
+    "drift_typing",
+    "logs_only_ablation",
+    "oof_predictions",
+    "random_rejection_control",
+    "recalibration_benefits",
+    "recalibration_ladder",
+    "recalibration_predictions",
+    "rejection_curve",
+    "validation_folds",
+    "validation_summary",
+    "zone_skill"
+  ]
+}

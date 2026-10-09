@@ -1,0 +1,2 @@
+target,method,point_improvement_pct,mae_0pct,mae_20pct,ci95_low_pct,ci95_high_pct,mde95_half_width_pct_points,threshold_used_pct_points,bootstrap_n,seed,K_frozen
+total_gas_m3_t,global,21.509181247201777,0.3928120388053427,0.30832138541787296,6.338224917774677,40.11315979601142,16.887467439118375,16.887,20000,20260701,4

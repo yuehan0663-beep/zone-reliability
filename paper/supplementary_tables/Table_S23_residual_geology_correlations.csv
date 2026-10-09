@@ -1,0 +1,29 @@
+﻿variable,metric,level,analysis,rho,p_value,n,note
+depth_md,signed residual,point,Spearman,-0.28455897033830213,7.985017543841958e-07,291,complete-pair Spearman; residual=predicted-observed TOC
+DEN,signed residual,point,Spearman,0.2278624636179764,0.0004554180004648918,233,complete-pair Spearman; residual=predicted-observed TOC
+max_burial_top,signed residual,point,Spearman,-0.013383017074206706,0.8866180246627998,116,complete-pair Spearman; residual=predicted-observed TOC
+pressure_coeff,signed residual,point,Spearman,0.3301627960204335,7.90210290880605e-09,291,complete-pair Spearman; residual=predicted-observed TOC
+DEN,signed residual,point,partial Spearman controlling depth_md,0.21273405396243675,0.0010859404515391933,233,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+max_burial_top,signed residual,point,partial Spearman controlling depth_md,-0.09617105503382745,0.3044396274496489,116,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+pressure_coeff,signed residual,point,partial Spearman controlling depth_md,0.42585611677141466,3.004646953870119e-14,291,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+depth_md,absolute residual,point,Spearman,0.35537304783563595,4.3473996126605573e-10,291,complete-pair Spearman; residual=predicted-observed TOC
+DEN,absolute residual,point,Spearman,-0.12964617889140606,0.04807893264948894,233,complete-pair Spearman; residual=predicted-observed TOC
+max_burial_top,absolute residual,point,Spearman,-0.1082670609607283,0.24733451222406572,116,complete-pair Spearman; residual=predicted-observed TOC
+pressure_coeff,absolute residual,point,Spearman,-0.1249243970021768,0.03315261849831777,291,complete-pair Spearman; residual=predicted-observed TOC
+DEN,absolute residual,point,partial Spearman controlling depth_md,-0.11028103287498522,0.09306632983657569,233,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+max_burial_top,absolute residual,point,partial Spearman controlling depth_md,-0.22500394237723767,0.015167847895132654,116,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+pressure_coeff,absolute residual,point,partial Spearman controlling depth_md,-0.22916464699471542,7.978095805104531e-05,291,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+depth_md,signed residual,well_median,Spearman,0.03372434017595308,0.8546132702826629,32,complete-pair Spearman; residual=predicted-observed TOC
+DEN,signed residual,well_median,Spearman,0.1565407772304324,0.4263269071389283,28,complete-pair Spearman; residual=predicted-observed TOC
+max_burial_top,signed residual,well_median,Spearman,-0.10629514963880288,0.6746395315456968,18,complete-pair Spearman; residual=predicted-observed TOC
+pressure_coeff,signed residual,well_median,Spearman,0.43475073313782986,0.012899179502521521,32,complete-pair Spearman; residual=predicted-observed TOC
+DEN,signed residual,well_median,partial Spearman controlling depth_md,0.15880977878047922,0.4195679247138232,28,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+max_burial_top,signed residual,well_median,partial Spearman controlling depth_md,-0.21405194948090894,0.39371559224658814,18,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+pressure_coeff,signed residual,well_median,partial Spearman controlling depth_md,0.4456615889260619,0.010579262170855473,32,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+depth_md,absolute residual,well_median,Spearman,0.28409090909090906,0.11507464399284138,32,complete-pair Spearman; residual=predicted-observed TOC
+DEN,absolute residual,well_median,Spearman,0.041050903119868636,0.8356939585960416,28,complete-pair Spearman; residual=predicted-observed TOC
+max_burial_top,absolute residual,well_median,Spearman,-0.25696594427244585,0.30330908061762435,18,complete-pair Spearman; residual=predicted-observed TOC
+pressure_coeff,absolute residual,well_median,Spearman,-0.3969941348973607,0.024465004147406422,32,complete-pair Spearman; residual=predicted-observed TOC
+DEN,absolute residual,well_median,partial Spearman controlling depth_md,-0.0002572116726533337,0.9989635641816054,28,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+max_burial_top,absolute residual,well_median,partial Spearman controlling depth_md,-0.34189699699232756,0.1649291806600957,18,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported
+pressure_coeff,absolute residual,well_median,partial Spearman controlling depth_md,-0.5284033901490531,0.0018787624610017099,32,rank-transformed variable and residual were linearly residualized on ranked depth_md; Pearson r of residuals reported

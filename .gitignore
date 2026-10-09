@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv*/
+outputs/
+private*/
+*.pkl
+*.pickle
+*.xlsx
+*.xls
+*.zip
+*.rar
+*.7z
+.ipynb_checkpoints/

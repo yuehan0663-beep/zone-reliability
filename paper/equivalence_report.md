@@ -1,0 +1,71 @@
+# Reference equivalence and diagnostic portability
+
+A (Python 3.11.9): **28/28 gate groups PASS**. The six added groups contain
+eight scalar comparisons, each using the original ±.001 tolerance. Existing
+22 results come from the completed authorized reference rerun; only the added
+attribution fits were run for v2. No model parameters or tolerances were changed.
+
+| gate | anchor | actual | expected | tolerance | passed |
+|---|---|---|---|---|---|
+| 1 | TOC LOZO ExtraTrees pooled R2 | -0.786092051977473 | -0.786 | 0.005 | True |
+| 2 | gas LOZO RF pooled R2 | 0.09201468577144034 | 0.092 | 0.005 | True |
+| 3 | TOC LOWO zone mean MAE | 0.2563568631790037 | 0.256 | 0.001 | True |
+| 4 | gas LOWO zone mean MAE | 0.42572246227829225 | 0.426 | 0.001 | True |
+| 5 | toc_pct LOWO best MAE | 0.30269018111367185 | 0.303 | 0.001 | True |
+| 6 | toc_pct random best pooled R2 | 0.45165351653390906 | 0.452 | 0.005 | True |
+| 7 | total_gas_m3_t LOWO best MAE | 0.39004754087079224 | 0.39 | 0.001 | True |
+| 8 | total_gas_m3_t random best pooled R2 | 0.39603368685579043 | 0.396 | 0.005 | True |
+| 9 | toc_pct LOWO global coverage | 0.8710813492063493 | 0.871 | 0.002 | True |
+| 10 | toc_pct LOWO risk_inflated coverage | 0.9259771825396825 | 0.926 | 0.002 | True |
+| 11 | total_gas_m3_t LOWO global coverage | 0.9136687386687388 | 0.914 | 0.002 | True |
+| 12 | total_gas_m3_t LOWO risk_inflated coverage | 0.9493589743589743 | 0.949 | 0.002 | True |
+| 13 | toc_pct North mixed-protocol global coverage | 0.6487455197132617 | 0.649 | 0.002 | True |
+| 14 | total_gas_m3_t North mixed-protocol global coverage | 0.6060606060606061 | 0.606 | 0.002 | True |
+| 15 | gas LOWO matched eligible units 20% rejection benefit | 6.62913952092778 | 6.62913952092778 | 1e-06 | True |
+| 16 | North TOC Schmoker relative_MAE_improvement_vs_zonemean_pct | 7.3887 | 7.39 | 0.05 | True |
+| 17 | North TOC Schmoker improvement_ci_low_pct | 1.17358 | 1.17 | 0.05 | True |
+| 18 | North TOC Schmoker improvement_ci_high_pct | 25.225 | 25.23 | 0.05 | True |
+| 19 | published sample ordering for bootstrap aliases | 1.0 | 1.0 | 0.0 | True |
+| 20 | S30 all skill_class values | 1.0 | 1.0 | 0.0 | True |
+| 21 | corrected gas ladder all published strings | 1.0 | 1.0 | 0.0 | True |
+| 22 | corrected gas best methods and benefit CI strings | 1.0 | 1.0 | 0.0 | True |
+| 23 | TOC full LOWO pairwise Spearman | 0.9483560794044666 | 0.948 | .001 | True |
+| 24 | total_gas full LOWO pairwise Spearman | 0.8372673480365788 | 0.837 | .001 | True |
+| 25 | TOC full LOZO pairwise Spearman | 0.850815850815851 | 0.851 | .001 | True |
+| 26 | total_gas full LOZO pairwise Spearman | 0.4965034965034966 | 0.497 | .001 | True |
+| 27 | TOC logs-only LOWO pairwise Spearman; total_gas logs-only LOWO pairwise Spearman | 0.9328629032258065; 0.943076923076923 | 0.933; 0.943 | .001 | True |
+| 28 | TOC logs_only LOZO pooled R2; TOC full_logs_plus_descriptors LOZO pooled R2 | -0.361440099128014; -0.786092051977473 | -0.361; -0.786 | .001 | True |
+
+## Diagnostic environment B
+
+B (Python 3.12) is a reporting item under v2 and does not block this local
+delivery. Its original 22 comparisons below are retained for inspection.
+All 8028 composite risk scores agree exactly. XGBoost maximum prediction delta
+is .1170002222; related coverage delta is at most .009. Matched eligible gas
+rejection benefit is 6.629139521% in A and 6.514104426% in B. These differences
+do not change the stated scientific conclusions. See the released delta CSVs.
+
+| anchor | actual | expected | tolerance | passed |
+|---|---|---|---|---|
+| TOC LOZO ExtraTrees pooled R2 | -0.7860920519774728 | -0.786 | 0.005 | True |
+| gas LOZO RF pooled R2 | 0.09201468577144034 | 0.092 | 0.005 | True |
+| TOC LOWO zone mean MAE | 0.2563568631790037 | 0.256 | 0.001 | True |
+| gas LOWO zone mean MAE | 0.42572246227829225 | 0.426 | 0.001 | True |
+| toc_pct LOWO best MAE | 0.30269018111367185 | 0.303 | 0.001 | True |
+| toc_pct random best pooled R2 | 0.45165351653390906 | 0.452 | 0.005 | True |
+| total_gas_m3_t LOWO best MAE | 0.39004754087079224 | 0.39 | 0.001 | True |
+| total_gas_m3_t random best pooled R2 | 0.39603368685579043 | 0.396 | 0.005 | True |
+| toc_pct LOWO global coverage | 0.8718253968253968 | 0.871 | 0.002 | True |
+| toc_pct LOWO risk_inflated coverage | 0.9225049603174603 | 0.926 | 0.002 | False |
+| total_gas_m3_t LOWO global coverage | 0.9115319865319866 | 0.914 | 0.002 | False |
+| total_gas_m3_t LOWO risk_inflated coverage | 0.9476495726495725 | 0.949 | 0.002 | True |
+| toc_pct North mixed-protocol global coverage | 0.6397849462365591 | 0.649 | 0.002 | False |
+| total_gas_m3_t North mixed-protocol global coverage | 0.6060606060606061 | 0.606 | 0.002 | True |
+| gas LOWO matched eligible units 20% rejection benefit | 6.514104425601362 | 6.62913952092778 | 1e-06 | False |
+| North TOC Schmoker relative_MAE_improvement_vs_zonemean_pct | 7.3887 | 7.39 | 0.05 | True |
+| North TOC Schmoker improvement_ci_low_pct | 1.17358 | 1.17 | 0.05 | True |
+| North TOC Schmoker improvement_ci_high_pct | 25.225 | 25.23 | 0.05 | True |
+| published sample ordering for bootstrap aliases | 1.0 | 1.0 | 0.0 | True |
+| S30 all skill_class values | 1.0 | 1.0 | 0.0 | True |
+| corrected gas ladder all published strings | 1.0 | 1.0 | 0.0 | True |
+| corrected gas best methods and benefit CI strings | 1.0 | 1.0 | 0.0 | True |

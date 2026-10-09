@@ -1,0 +1,14 @@
+{
+  "source": "Online Resource/code/scripts",
+  "gas_formula": "Methods-authorized correction",
+  "extraction": "Functions retain their original AST apart from documentation and explicitly listed API adapters.",
+  "adapters": [
+    "English zone mapping",
+    "parameterized DataFrame/path inputs",
+    "fast-mode model selection",
+    "calibration_split helper with identical source indexing",
+    "optional finite-sample quantile",
+    "explicit support assessment for decision gates"
+  ],
+  "random_rejection_source": "T3c2_random_baseline_diagnosis.py"
+}

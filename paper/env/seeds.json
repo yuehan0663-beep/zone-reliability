@@ -1,0 +1,6 @@
+{
+  "model_random_state": 42,
+  "kfold_random_state": 42,
+  "conformal_calibration_rng": 42,
+  "bootstrap_rng_quant_recal": 20260613
+}

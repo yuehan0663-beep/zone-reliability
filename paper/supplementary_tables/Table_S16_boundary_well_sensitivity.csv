@@ -1,0 +1,15 @@
+﻿dataset,target,model,variant,m,boundary_proxy,n_boundary_unique_wells,n_test,MAE_w,RMSE_w,pooled_R2,Spearman_mean,coverage,canonical_MAE_w,canonical_fold_mean_R2_deprecated,original_reproduction_MAE_diff,qualitative_result,tested_overturn_within_m_le_3
+TOC_high_medium,TOC,ExtraTrees,original,0,none,0,291,0.457919510528381,0.5347742855780535,-0.786092051977473,0.05999905962461535,,0.457919510528381,-1.9843892646895427,0.0,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,remove,1,cross-zone nearest-neighbor wells,4,274,0.4938724604672787,0.5735187049843039,-0.9794539502131012,-0.141264833156486,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,relabel,1,cross-zone nearest-neighbor wells,4,291,0.45664710899258226,0.543885987404271,-0.7867641602941762,-0.02282466143510667,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,remove,2,cross-zone nearest-neighbor wells,8,267,0.48212793640275853,0.5639733602935101,-0.8938793306672486,-0.08812764885273765,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,relabel,2,cross-zone nearest-neighbor wells,8,291,0.43654882235206743,0.5297087627626502,-0.6588504456011979,-0.07721727535574106,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,remove,3,cross-zone nearest-neighbor wells,12,242,0.450972919694404,0.514911575057544,-0.6975301383312569,0.04005905173210391,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+TOC_high_medium,TOC,ExtraTrees,relabel,3,cross-zone nearest-neighbor wells,12,291,0.3867878706174954,0.47512086559784883,-0.3903543651918755,0.14351716146565344,,,,,TOC_LOZO_failed_or_zone_sensitive,N
+total_gas_high_medium,total_gas,RF,original,0,none,0,155,0.3987219837530976,0.5090174778353427,0.09201468577144045,0.2522728530810176,,0.3987219837530976,-0.2275434353808795,0.0,gas_LOZO_weak_positive,N
+total_gas_high_medium,total_gas,RF,remove,1,cross-zone nearest-neighbor wells,4,146,0.4189126808450852,0.5266210588288449,0.061542034191253925,0.34608147062378425,,,,,gas_LOZO_weak_positive,N
+total_gas_high_medium,total_gas,RF,relabel,1,cross-zone nearest-neighbor wells,4,155,0.3947137342992411,0.5092106413018624,0.09888563308272369,0.347935102000906,,,,,gas_LOZO_weak_positive,N
+total_gas_high_medium,total_gas,RF,remove,2,cross-zone nearest-neighbor wells,8,132,0.44544365424324095,0.5531756014762625,-0.03143186634525952,0.2781454190312294,,,,,gas_LOZO_nonpositive_potential_flip,Y
+total_gas_high_medium,total_gas,RF,relabel,2,cross-zone nearest-neighbor wells,8,155,0.3866584221671099,0.49875214254751277,0.1335922813837339,0.33529112856917215,,,,,gas_LOZO_weak_positive,N
+total_gas_high_medium,total_gas,RF,remove,3,cross-zone nearest-neighbor wells,12,118,0.49677139054244446,0.6007811228619602,-0.2799605190736165,0.06691935838277302,,,,,gas_LOZO_nonpositive_potential_flip,Y
+total_gas_high_medium,total_gas,RF,relabel,3,cross-zone nearest-neighbor wells,12,155,0.3924419046733946,0.5022863765262865,0.10759580210591146,0.4105795463337283,,,,,gas_LOZO_weak_positive,N

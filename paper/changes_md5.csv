@@ -1,0 +1,10 @@
+﻿file,old_md5,new_md5,reason
+acquisition_guidance.csv,1019009ee10f1b9c2e0a8d93c4ca95a8,25fd19f837099ce01be3cfa6706f02c6,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+recalibration_predictions.csv,b22e622d85557910ad4ba9faea97ac3a,48a0c9a6ad297f6184fe4ac18ffcf148,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+rejection_vs_zonemean.csv,63651867978226b0d4ccae777885b041,0229951651f7493734fb55d1c950b941,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+Table_S20a_gas_proxy_parameters.csv,8f22579e7ddeec4b90bb06b843224d71,2a30dc10e4aecb32fbe936dbcbaaa160,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+Table_S20b_gas_proxy_sensitivity.csv,573cfd32a535951b596823cef2e8f483,95a37e5c710046c9ee1f742286c3e2af,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+Table_S4_recalibration_all_methods.csv,608848bf460acb093df048b45d775f54,462c036d0c115130c1a07ef096f265c7,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+Table_S5_drift_type_correctability.csv,841a14fe14de18c5f83c073293fe8c20,9def2c991c8b5f4d650d71bd873a5a4b,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+Table_S8_learning_curve_guidance.csv,6d1c834c89dad3b6e203f606a255710e,e8c6db6fc8689b10c9ce908ba935c973,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"
+zone_recalibration_results.csv,3dab29486710f0e4c8e30754241f3ab2,15802d828a902837c25cce5714b883f3,"gas proxy implementation aligned with the Methods description: fixed q_L, no TOC scaling, no free-gas scaling factor"

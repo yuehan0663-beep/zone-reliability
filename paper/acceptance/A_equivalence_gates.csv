@@ -1,0 +1,23 @@
+anchor,actual,expected,tolerance,passed
+TOC LOZO ExtraTrees pooled R2,-0.786092051977473,-0.786,0.005,True
+gas LOZO RF pooled R2,0.09201468577144034,0.092,0.005,True
+TOC LOWO zone mean MAE,0.2563568631790037,0.256,0.001,True
+gas LOWO zone mean MAE,0.42572246227829225,0.426,0.001,True
+toc_pct LOWO best MAE,0.30269018111367185,0.303,0.001,True
+toc_pct random best pooled R2,0.45165351653390906,0.452,0.005,True
+total_gas_m3_t LOWO best MAE,0.39004754087079224,0.39,0.001,True
+total_gas_m3_t random best pooled R2,0.39603368685579043,0.396,0.005,True
+toc_pct LOWO global coverage,0.8710813492063493,0.871,0.002,True
+toc_pct LOWO risk_inflated coverage,0.9259771825396825,0.926,0.002,True
+total_gas_m3_t LOWO global coverage,0.9136687386687388,0.914,0.002,True
+total_gas_m3_t LOWO risk_inflated coverage,0.9493589743589743,0.949,0.002,True
+toc_pct North mixed-protocol global coverage,0.6487455197132617,0.649,0.002,True
+total_gas_m3_t North mixed-protocol global coverage,0.6060606060606061,0.606,0.002,True
+gas LOWO matched eligible units 20% rejection benefit,6.62913952092778,6.62913952092778,1e-06,True
+North TOC Schmoker relative_MAE_improvement_vs_zonemean_pct,7.3887,7.39,0.05,True
+North TOC Schmoker improvement_ci_low_pct,1.17358,1.17,0.05,True
+North TOC Schmoker improvement_ci_high_pct,25.225,25.23,0.05,True
+published sample ordering for bootstrap aliases,1.0,1.0,0.0,True
+S30 all skill_class values,1.0,1.0,0.0,True
+corrected gas ladder all published strings,1.0,1.0,0.0,True
+corrected gas best methods and benefit CI strings,1.0,1.0,0.0,True

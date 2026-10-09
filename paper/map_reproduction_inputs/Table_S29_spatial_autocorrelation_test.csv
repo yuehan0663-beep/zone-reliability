@@ -1,0 +1,7 @@
+﻿target,zone_en,n_wells,moran_I_k4,moran_p_positive_k4,moran_I_k6,moran_p_positive_k6,variogram_bins,variogram_rho,variogram_rho_p,variogram_early_slope,variogram_late_slope,variogram_tail_head_ratio,variogram_rise_to_sill,nn_distance_q1_km,nn_distance_median_km,nn_distance_q3_km,interpolation_allowed,decision_reason
+TOC,Central,26,0.152522,0.059000,0.102126,0.071000,8,0.238095,0.570156,0.000201,-0.000534,1.430811,False,5.391348,6.403732,7.404719,False,one or more pre-specified criteria failed
+TOC,North,13,-0.331379,0.985000,-0.142696,0.730000,7,-0.392857,0.383317,0.000357,-0.000956,0.823050,False,5.815502,6.989608,7.952662,False,one or more pre-specified criteria failed
+TOC,South,70,0.016487,0.342000,0.032149,0.226000,8,-0.428571,0.289403,-0.000141,0.000008,0.934606,False,3.549968,4.581239,5.628000,False,one or more pre-specified criteria failed
+total_gas,Central,26,0.168484,0.051000,0.131548,0.060000,8,0.928571,0.000863,0.000457,0.000219,1.669023,True,5.391348,6.403732,7.404719,False,one or more pre-specified criteria failed
+total_gas,North,13,-0.060387,0.356000,-0.048793,0.279000,7,0.357143,0.431611,-0.000034,0.000446,1.356317,False,5.815502,6.989608,7.952662,False,one or more pre-specified criteria failed
+total_gas,South,70,0.017920,0.336000,0.016451,0.292000,8,0.952381,0.000260,0.000149,0.000251,1.389726,False,3.549968,4.581239,5.628000,False,one or more pre-specified criteria failed

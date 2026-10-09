@@ -1,0 +1,10 @@
+﻿target,proxy,zone,zone_en,n,wells,spearman_proxy_gold,affine_slope,affine_intercept,drift_type,best_method,relative_improvement_pct,benefit_class,correctability_rule
+TOC,schmoker_toc_proxy,Central,Central,39,7,0.513843,2.1005,0.611231,monotonic_shape_shift,C1_offset,10.0546,directional only,partly calibratable: effect direction positive but uncertainty crosses zero
+TOC,schmoker_toc_proxy,North,North,93,8,0.333367,1.48646,0.95675,relationship_shift_or_weak_proxy,C1_offset,7.3887,CI-robust,calibratable: stable local bias/scale component despite weak raw transfer
+TOC,schmoker_toc_proxy,South,South,104,13,0.0676793,0.0598389,0.521872,relationship_shift_or_weak_proxy,C1_offset,-5.776,no directional benefit,not calibratable under current data: weak/unstable relation or correction overfit risk
+TOC,passey_toc_proxy,Central,Central,71,8,0.531714,0.381906,0.618997,scale_shift,C2_affine,7.0985,directional only,partly calibratable: effect direction positive but uncertainty crosses zero
+TOC,passey_toc_proxy,North,North,79,7,0.182914,0.0992353,1.04426,scale_shift,C4_small_ridge,-21.5856,no directional benefit,not calibratable under current data: weak/unstable relation or correction overfit risk
+TOC,passey_toc_proxy,South,South,83,13,0.228195,0.135378,0.424607,scale_shift,C3_isotonic,2.72309,directional only,partly calibratable: effect direction positive but uncertainty crosses zero
+total_gas,gas_total_proxy_quant,Central,Central,62,11,-0.206416,-0.0122205,1.33962,scale_shift,C3_isotonic,-1.75361,no directional benefit,not calibratable under current data: weak/unstable relation or correction overfit risk
+total_gas,gas_total_proxy_quant,North,North,45,5,-0.186825,-0.133555,2.30811,scale_shift,C4_small_ridge,22.835,directional only,partly calibratable: effect direction positive but uncertainty crosses zero
+total_gas,gas_total_proxy_quant,South,South,50,10,0.085042,0.0408135,1.02464,scale_shift,C2_affine,0.933223,no directional benefit,not calibratable under current data: weak/unstable relation or correction overfit risk

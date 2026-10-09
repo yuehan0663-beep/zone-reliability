@@ -1,0 +1,638 @@
+--- paper/legacy_scripts/run_table_s27_to_s29_well_level_risk.py (before)
++++ paper/legacy_scripts/run_table_s27_to_s29_well_level_risk.py (English)
+@@ -914,22 +914,22 @@
+     anon_map: pd.DataFrame,
+ ) -> None:
+     lines = [
+-        "# 可信度地图高分辨率化计算报告",
+-        "",
+-        "## 1. 数据定位",
+-        "",
+-        f"- 模型就绪工作簿：`{workbook}`",
++        "# High-resolution reliability map-input calculations",
++        "",
++        "## 1. Data locations",
++        "",
++        f"- Model-ready workbook: `{workbook}`",
+         f"- MD5：`{workbook_md5}`",
+     ]
+     for name, shape, columns in sheet_details:
+-        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns；字段：{', '.join(columns)}")
++        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns; fields: {', '.join(columns)}")
+     lines += [
+-        "- 井名通过批准映射表转换为公开罗马化编号；`L1` 与 S25 中 `Le1` 的一对一别名已显式记录，未修改任何源文件。",
+-        f"- Layer 1 输出：{len(s27)} rows，双目标各 {len(s27) // 2} 口井。标定井 feature_dist 保持为空。",
+-        "",
+-        "## 2. Layer 2 复现门",
+-        "",
+-        "正文锚定 coverage 的统计口径是模型-外层井折 coverage 的简单平均；另列池化样本比例供审计，二者不可混用。",
++        "- Approved mapping converts wells to public romanized IDs. The L1/Le1 alias in S25 is documented explicitly; source files are unchanged.",
++        f"- Layer 1 output: {len(s27)} rows, each target has {len(s27) // 2} wells. Calibration-well feature_dist remains blank.",
++        "",
++        "## 2. Layer 2 reproduction gates",
++        "",
++        "Coverage anchors use the simple mean over model/outer-well-fold coverages. Pooled sample coverage is reported separately; these conventions must not be interchanged.",
+         "",
+         "| target | models | fold-mean coverage | anchor | delta | pooled-sample coverage | fold-mean width | gate |",
+         "|---|---|---:|---:|---:|---:|---:|---|",
+@@ -942,26 +942,26 @@
+         )
+     lines += [
+         "",
+-        "Layer 2 的 logs-only 预测模型在全部有标签样本上重拟合；q90 仍由 seed=42 的按井 25% 校准划分获得。标定井风险使用严格 LOWO 留出预测，避免训练内风险被低估。三个 canonical 模型分别计算，最后在井级取中位数。",
+-        "",
+-        "## 3. 全局风险尺度",
+-        "",
+-        "对每个 target-model 的全部标定井留出样本与 logs-only 样本统一计算百分位，权重固定为 interval width 0.55、domain kNN 0.25、missing risk 0.10、quality risk 0.10。quality risk 恒为 0.1，保留用于协议一致性，但不贡献排序信息。",
++        "Layer 2 logs-only models refit all labelled samples. q90 uses a 25% calibration-well split with seed 42. Strict LOWO held-out predictions prevent underestimated calibration-well risk. Compute each of the three canonical models, then take the well-level median.",
++        "",
++        "## 3. Global risk scale",
++        "",
++        "For each target/model, rank all calibration-well held-out and logs-only samples together. Fixed weights are width .55, domain kNN .25, missing risk .10 and quality risk .10. Constant quality risk .1 preserves the protocol but carries no ordering information.",
+     ]
+     audit = ranked.copy()
+     audit["rank_delta"] = audit.composite_risk_global - audit.composite_risk_fold_local
+     example = audit.loc[audit.rank_delta.abs().idxmax()]
+     lines.append(
+-        f"- 差异示例：{example.target}/{example.model}/{example.well_id} 的折内 composite risk = "
+-        f"{example.composite_risk_fold_local:.4f}，全局尺度 = {example.composite_risk_global:.4f}，"
+-        f"差值 = {example.rank_delta:+.4f}。"
++        f"- Example difference: {example.target}/{example.model}/{example.well_id} fold-local composite risk = "
++        f"{example.composite_risk_fold_local:.4f}, global scale = {example.composite_risk_global:.4f}, "
++        f"difference = {example.rank_delta:+.4f}."
+     )
+     lines += [
+-        f"- S28 行数：{len(s28)}；每个目标 {s28.groupby('target').size().to_dict()}。",
+-        "",
+-        "## 4. Layer 3 空间自相关检验",
+-        "",
+-        "Moran's I 使用行标准化的有向 kNN 权重，k=4 和 6，单侧正相关置换检验 999 次（seed=42）。经验变差函数按距离排序后等频分箱，每箱至少 10 对。预先固定的“上升后趋平”判据为：Spearman rho>0.5、前段斜率>0、末两箱/首两箱半方差比>=1.10、后段斜率绝对值<=前段的 0.5。",
++        f"- S28 rows: {len(s28)}, per target {s28.groupby('target').size().to_dict()}.",
++        "",
++        "## 4. Layer 3 spatial autocorrelation",
++        "",
++        "Moran's I uses row-normalized directed kNN weights for k=4 and 6, with 999 one-sided positive-correlation permutations (seed 42). Equal-frequency distance bins contain at least ten pairs. Predefined rise-to-sill criteria: Spearman rho>.5, positive initial slope, final-two/initial-two semivariance ratio >=1.10, and absolute late slope <=.5 times the initial slope.",
+         "",
+         "| target | zone | n | I4 | p4 | I6 | p6 | variogram | NN median km | interpolate |",
+         "|---|---|---:|---:|---:|---:|---:|---|---:|---|",
+@@ -975,16 +975,16 @@
+         )
+     allowed = s29[s29.interpolation_allowed]
+     denied = s29[~s29.interpolation_allowed]
+-    lines += ["", "## 5. 结论", ""]
++    lines += ["", "## 5. Conclusions", ""]
+     if allowed.empty:
+         lines.append(
+-            "六个 target-zone 组合均未同时满足预设三条判据，因此没有生成连续风险面，也没有放宽 k、p 值、分箱或变差函数判据。结果支持：可靠性主要由特征空间位置决定，而不是由地图邻近性自动决定。"
++            "None of the six target/zone combinations passes all predefined admission criteria, so no continuous risk surfaces are generated. k, p thresholds, bins and variogram criteria are unchanged. Reliability depends on feature-space position and cannot be inferred from geographic proximity alone."
+         )
+     else:
+         lines.append(
+-            "允许插值的组合："
++            "Combinations admitted for interpolation: "
+             + ", ".join(f"{row.target}/{row.zone_en}" for _, row in allowed.iterrows())
+-            + "。其余组合不插值。"
++            + ". Other combinations are not interpolated."
+         )
+     if not denied.empty:
+         reasons = []
+@@ -999,18 +999,18 @@
+             if row.n_wells < 15:
+                 failed.append("n<15")
+             reasons.append(f"{row.target}/{row.zone_en}: {', '.join(failed)}")
+-        lines.append("- 未通过原因：" + "; ".join(reasons) + "。")
++        lines.append("- Failed criteria: " + "; ".join(reasons) + ".")
+     lines += [
+         "",
+-        "## 6. 叠加层",
+-        "",
+-        f"- 使用坐标范围：lon [{xlim[0]:.2f}, {xlim[1]:.2f}]，lat [{ylim[0]:.2f}, {ylim[1]:.2f}]。",
+-        "- 叠加层按真实经纬度输出，Figure 13 的错误刻度必须由作者修正后再对齐。",
+-        "- wells 层：标定井为黑色实心圆，按取心点数三级大小；logs-only 为黑色空心圆。",
+-        "- risk-points 层：标定井以 cividis 填色；logs-only 保持空心几何，以 cividis 边线颜色编码风险。",
+-        "- 未生成 risk-surface 层的组合不得在 CDR 中人工补色。",
+-        "",
+-        "## 7. 井名对照",
++        "## 6. Overlay layers",
++        "",
++        f"- Coordinate range: longitude [{xlim[0]:.2f}, {xlim[1]:.2f}], lat [{ylim[0]:.2f}, {ylim[1]:.2f}].",
++        "- Overlays use actual longitude/latitude. Register them against the author-prepared Fig. 11 coordinate axes.",
++        "- Well layer: calibration wells are filled black circles in three core-count sizes; logs-only wells are open black circles.",
++        "- Risk-point layer: cividis-filled calibration wells; open logs-only markers with cividis outlines encode risk.",
++        "- Do not manually add risk surfaces in artwork for combinations lacking an admitted surface.",
++        "",
++        "## 7. Well-ID mapping",
+         "",
+         "| public well_id | anonymous ID |",
+         "|---|---|",
+@@ -1019,7 +1019,7 @@
+         lines.append(f"| {row.well_id} | {row.well_anon} |")
+     lines += [
+         "",
+-        "## 8. 文件清单",
++        "## 8. File list",
+         "",
+         "- `Table_S27_well_level_map_inputs.csv`",
+         "- `Table_S28_well_level_conformal_risk.csv`",
+@@ -1029,10 +1029,10 @@
+         "- `overlay_risk_points_<target>.svg/png`",
+         "- `overlay_registration_check.png`",
+         "- `legend_risk_colorbar.svg`",
+-        "- `qa/variograms_contact_sheet.png` 与灰度版",
+-        "- `qa/risk_points_contact_sheet.png` 与灰度版",
+-        "",
+-        "所有输出均为新增文件；未修改现有 CSV、脚本、Figure 13 或手稿 `.tex`。",
++        "- qa/variograms_contact_sheet.png and grayscale version",
++        "- qa/risk_points_contact_sheet.png and grayscale version",
++        "",
++        "Outputs are additional files; existing CSVs, scripts, author Fig. 11 artwork and manuscript TeX are unchanged.",
+     ]
+     (output / "report_reliability_map_upgrade.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+ 
+--- paper/legacy_scripts/run_zone_skill_criterion.py (before)
++++ paper/legacy_scripts/run_zone_skill_criterion.py (English)
+@@ -305,19 +305,19 @@
+     ]
+     comparison_rows = [row for row in rows if row["predictor_group"] == "B_table3_best_envelope"]
+     lines = [
+-        "# 逐带 LOWO 模型 vs 分带均值技能判据",
++        "# Within-zone LOWO model versus zone-mean skill criterion",
+         "",
+-        "## 1. 计算口径",
++        "## 1. Calculation convention",
+         "",
+-        "- 主输入仅为 `oof_predictions.csv`；筛选 `cv_scheme=LOWO`，未训练新模型、未调参、未更换特征。",
+-        "- A 组固定骨干：TOC=`ExtraTrees`，含气量=`RF`；B 组 Table 3 性能包络：TOC=`SVR_RBF`。含气量 A/B 均为 `RF`，因此只计算一次。",
+-        f"- 按井自举 B={BOOTSTRAP_REPLICATES}，随机种子={BOOTSTRAP_SEED}，百分位区间为 2.5%--97.5%。",
+-        "- `zone_mean` 在单带内为常数，其 Spearman 无定义，故 S30 仅报模型 Spearman。",
+-        f"- 已验证按 LOWO 折样本数加权的折级 MAE 与带内池化 MAE 恒等，最大绝对差为 {equivalence_error:.3e}。",
++        "- Input is oof_predictions.csv filtered to LOWO; no model refitting, tuning or feature changes.",
++        "- Group A fixed backbones: TOC ExtraTrees and gas RF. Group B Table 3 envelope: TOC SVR_RBF. Gas RF is shared by both groups and computed once.",
++        f"- Well-bootstrap replicates B={BOOTSTRAP_REPLICATES}, random seed={BOOTSTRAP_SEED}, percentile interval 2.5%--97.5%.",
++        "- zone_mean is constant within each zone; its Spearman is undefined. S30 reports model Spearman only.",
++        f"- Sample-weighted LOWO fold MAE equals within-zone pooled MAE; maximum absolute difference {equivalence_error:.3e}.",
+         "",
+-        "## 2. 锚定校验",
++        "## 2. Anchor checks",
+         "",
+-        "| 校验 | 状态 | 实算值 | 目标 |",
++        "| Check | Status | Observed | Expected |",
+         "|---|---|---|---|",
+     ]
+     for check in checks:
+@@ -326,11 +326,11 @@
+     lines.extend(
+         [
+             "",
+-            f"S9 库存表记录 TOC={inventory['toc_points']} 点/{inventory['toc_wells']} 井、含气量={inventory['gas_points']} 点/{inventory['gas_wells']} 井；LOWO OOF 分析闭合为 291/32 和 155/26，井数一致，库存点数与进入分析的点数分层记录。",
+-            "",
+-            "## 3. A 组固定骨干主结果",
+-            "",
+-            "| 目标 | 构造带 | n_points | n_wells | MAE_model | MAE_zone_mean | 相对改善 % (95% CI) | Spearman | 技能档 |",
++            f"S9 inventory: TOC={inventory['toc_points']} points/{inventory['toc_wells']} wells, gas={inventory['gas_points']} points/{inventory['gas_wells']} wells; LOWO analysis has 291/32 and 155/26 points/wells. Well counts agree; inventory and model-ready sample counts are reported separately.",
++            "",
++            "## 3. Group A fixed-backbone results",
++            "",
++            "| Target | Zone | n_points | n_wells | MAE_model | MAE_zone_mean | Relative improvement % (95% CI) | Spearman | Skill class |",
+             "|---|---:|---:|---:|---:|---:|---:|---:|---|",
+         ]
+     )
+@@ -344,11 +344,11 @@
+     lines.extend(
+         [
+             "",
+-            "## 4. B 组性能包络对照",
+-            "",
+-            "B 组仅作对照，不用于图 13 定档。含气量 B 组与 A 组同为 RF，结果已合并在 A/B 共用行。",
+-            "",
+-            "| 目标 | 构造带 | 模型 | 相对改善 % (95% CI) | 描述性技能档 |",
++            "## 4. Group B model-envelope comparison",
++            "",
++            "Group B is a comparison only and does not set Fig. 11 action classes. Gas uses RF in both groups and appears in one shared row.",
++            "",
++            "| Target | Zone | Model | Relative improvement % (95% CI) | Descriptive skill class |",
+             "|---|---:|---|---:|---|",
+         ]
+     )
+@@ -360,27 +360,27 @@
+     lines.extend(
+         [
+             "",
+-            "## 5. 图 13 改法建议",
+-            "",
+-            "### (a) TOC 面板",
+-            "",
+-            "- **North：黄色 `locally calibratable`，保持不变。** 覆盖率优先级先行；北段 TOC 靠 Schmoker C1 偏移 +7.39% 的 CI-robust 局部矫正维持黄档，不依赖模型技能。A 组本身为 `no_skill`。",
+-            "- **Central：绿色 `deployable with interval`，保持不变。** 覆盖率达标，A 组为 `skill_directional`。",
+-            "- **South：改为钢蓝 `deployable at zone level only` (#6B8EAE)。** 覆盖率达标，但 A 组为 `no_skill`；可作带级数值配区间，不作深度分辨测井曲线。",
+-            "",
+-            "### (b) 含气量面板",
+-            "",
+-            "- **North：红色+斜纹 `requires data acquisition`，保持不变。** 覆盖率优先级先行，无 CI-robust 局部矫正；A 组模型技能虽为 `skill_CI_robust`，不能越过覆盖率条件。",
+-            "- **Central：绿色 `deployable with interval`，保持不变。** 覆盖率达标，A 组为 `skill_directional`。",
+-            "- **South：改为钢蓝 `deployable at zone level only` (#6B8EAE)。** 覆盖率达标，但 A 组为 `no_skill`；可作带级数值配区间，不作深度分辨测井曲线。",
+-            "",
+-            "### CI 跨零依赖",
+-            "",
+-            "Central TOC 和 Central 含气量的 A 组均为正点估计但 CI 跨零，属 `skill_directional`。按预定规则两格仍为绿色；若改用“仅 CI-robust 才算技能通过”的更严读法，两格都会改为钢蓝。",
+-            "",
+-            "## 6. 一句话结论",
+-            "",
+-            "加入技能条件后，图 13 共有 2 格改变：South TOC 和 South 含气量均由绿色改为钢蓝 `deployable at zone level only`。",
++            "## 5. Fig. 11 action-class interpretation",
++            "",
++            "### (a) TOC panel",
++            "",
++            "- North remains yellow (locally calibratable). Coverage has priority; the CI-robust Schmoker C1 TOC offset gain of 7.39% supports local recalibration, independently of group A no_skill.",
++            "- Central remains green (deployable with interval): coverage passes and group A has directional skill.",
++            "- South is steel blue (#6B8EAE; zone-level only). Coverage passes but group A has no_skill; use a zone-level value and interval, without a depth-resolved log prediction.",
++            "",
++            "### (b) Gas panel",
++            "",
++            "- North remains red with hatching (data acquisition). Coverage has priority and no CI-robust local correction exists; group A CI-robust model skill cannot override failed coverage.",
++            "- Central remains green (deployable with interval): coverage passes and group A has directional skill.",
++            "- South is steel blue (#6B8EAE; zone-level only). Coverage passes but group A has no_skill; use a zone-level value and interval, without a depth-resolved log prediction.",
++            "",
++            "### Dependence on intervals crossing zero",
++            "",
++            "Central TOC and gas group A point estimates are positive but intervals cross zero (directional skill). The predefined rule keeps both green; a stricter CI-robust-only interpretation would make both steel blue.",
++            "",
++            "## 6. Conclusion",
++            "",
++            "With the skill condition, two Fig. 11 cells change: South TOC and gas become steel blue (zone-level only).",
+         ]
+     )
+     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+--- paper/corrected_scripts/run_table_s27_to_s29_well_level_risk.py (before)
++++ paper/corrected_scripts/run_table_s27_to_s29_well_level_risk.py (English)
+@@ -909,22 +909,22 @@
+     anon_map: pd.DataFrame,
+ ) -> None:
+     lines = [
+-        "# 可信度地图高分辨率化计算报告",
+-        "",
+-        "## 1. 数据定位",
+-        "",
+-        f"- 模型就绪工作簿：`{workbook}`",
++        "# High-resolution reliability map-input calculations",
++        "",
++        "## 1. Data locations",
++        "",
++        f"- Model-ready workbook: `{workbook}`",
+         f"- MD5：`{workbook_md5}`",
+     ]
+     for name, shape, columns in sheet_details:
+-        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns；字段：{', '.join(columns)}")
++        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns; fields: {', '.join(columns)}")
+     lines += [
+-        "- 井名通过批准映射表转换为公开罗马化编号；`L1` 与 S25 中 `Le1` 的一对一别名已显式记录，未修改任何源文件。",
+-        f"- Layer 1 输出：{len(s27)} rows，双目标各 {len(s27) // 2} 口井。标定井 feature_dist 保持为空。",
+-        "",
+-        "## 2. Layer 2 复现门",
+-        "",
+-        "正文锚定 coverage 的统计口径是模型-外层井折 coverage 的简单平均；另列池化样本比例供审计，二者不可混用。",
++        "- Approved mapping converts wells to public romanized IDs. The L1/Le1 alias in S25 is documented explicitly; source files are unchanged.",
++        f"- Layer 1 output: {len(s27)} rows, each target has {len(s27) // 2} wells. Calibration-well feature_dist remains blank.",
++        "",
++        "## 2. Layer 2 reproduction gates",
++        "",
++        "Coverage anchors use the simple mean over model/outer-well-fold coverages. Pooled sample coverage is reported separately; these conventions must not be interchanged.",
+         "",
+         "| target | models | fold-mean coverage | anchor | delta | pooled-sample coverage | fold-mean width | gate |",
+         "|---|---|---:|---:|---:|---:|---:|---|",
+@@ -937,26 +937,26 @@
+         )
+     lines += [
+         "",
+-        "Layer 2 的 logs-only 预测模型在全部有标签样本上重拟合；q90 仍由 seed=42 的按井 25% 校准划分获得。标定井风险使用严格 LOWO 留出预测，避免训练内风险被低估。三个 canonical 模型分别计算，最后在井级取中位数。",
+-        "",
+-        "## 3. 全局风险尺度",
+-        "",
+-        "对每个 target-model 的全部标定井留出样本与 logs-only 样本统一计算百分位，权重固定为 interval width 0.55、domain kNN 0.25、missing risk 0.10、quality risk 0.10。quality risk 恒为 0.1，保留用于协议一致性，但不贡献排序信息。",
++        "Layer 2 logs-only models refit all labelled samples. q90 uses a 25% calibration-well split with seed 42. Strict LOWO held-out predictions prevent underestimated calibration-well risk. Compute each of the three canonical models, then take the well-level median.",
++        "",
++        "## 3. Global risk scale",
++        "",
++        "For each target/model, rank all calibration-well held-out and logs-only samples together. Fixed weights are width .55, domain kNN .25, missing risk .10 and quality risk .10. Constant quality risk .1 preserves the protocol but carries no ordering information.",
+     ]
+     audit = ranked.copy()
+     audit["rank_delta"] = audit.composite_risk_global - audit.composite_risk_fold_local
+     example = audit.loc[audit.rank_delta.abs().idxmax()]
+     lines.append(
+-        f"- 差异示例：{example.target}/{example.model}/{example.well_id} 的折内 composite risk = "
+-        f"{example.composite_risk_fold_local:.4f}，全局尺度 = {example.composite_risk_global:.4f}，"
+-        f"差值 = {example.rank_delta:+.4f}。"
++        f"- Example difference: {example.target}/{example.model}/{example.well_id} fold-local composite risk = "
++        f"{example.composite_risk_fold_local:.4f}, global scale = {example.composite_risk_global:.4f}, "
++        f"difference = {example.rank_delta:+.4f}."
+     )
+     lines += [
+-        f"- S28 行数：{len(s28)}；每个目标 {s28.groupby('target').size().to_dict()}。",
+-        "",
+-        "## 4. Layer 3 空间自相关检验",
+-        "",
+-        "Moran's I 使用行标准化的有向 kNN 权重，k=4 和 6，单侧正相关置换检验 999 次（seed=42）。经验变差函数按距离排序后等频分箱，每箱至少 10 对。预先固定的“上升后趋平”判据为：Spearman rho>0.5、前段斜率>0、末两箱/首两箱半方差比>=1.10、后段斜率绝对值<=前段的 0.5。",
++        f"- S28 rows: {len(s28)}, per target {s28.groupby('target').size().to_dict()}.",
++        "",
++        "## 4. Layer 3 spatial autocorrelation",
++        "",
++        "Moran's I uses row-normalized directed kNN weights for k=4 and 6, with 999 one-sided positive-correlation permutations (seed 42). Equal-frequency distance bins contain at least ten pairs. Predefined rise-to-sill criteria: Spearman rho>.5, positive initial slope, final-two/initial-two semivariance ratio >=1.10, and absolute late slope <=.5 times the initial slope.",
+         "",
+         "| target | zone | n | I4 | p4 | I6 | p6 | variogram | NN median km | interpolate |",
+         "|---|---|---:|---:|---:|---:|---:|---|---:|---|",
+@@ -970,16 +970,16 @@
+         )
+     allowed = s29[s29.interpolation_allowed]
+     denied = s29[~s29.interpolation_allowed]
+-    lines += ["", "## 5. 结论", ""]
++    lines += ["", "## 5. Conclusions", ""]
+     if allowed.empty:
+         lines.append(
+-            "六个 target-zone 组合均未同时满足预设三条判据，因此没有生成连续风险面，也没有放宽 k、p 值、分箱或变差函数判据。结果支持：可靠性主要由特征空间位置决定，而不是由地图邻近性自动决定。"
++            "None of the six target/zone combinations passes all predefined admission criteria, so no continuous risk surfaces are generated. k, p thresholds, bins and variogram criteria are unchanged. Reliability depends on feature-space position and cannot be inferred from geographic proximity alone."
+         )
+     else:
+         lines.append(
+-            "允许插值的组合："
++            "Combinations admitted for interpolation: "
+             + ", ".join(f"{row.target}/{row.zone_en}" for _, row in allowed.iterrows())
+-            + "。其余组合不插值。"
++            + ". Other combinations are not interpolated."
+         )
+     if not denied.empty:
+         reasons = []
+@@ -994,18 +994,18 @@
+             if row.n_wells < 15:
+                 failed.append("n<15")
+             reasons.append(f"{row.target}/{row.zone_en}: {', '.join(failed)}")
+-        lines.append("- 未通过原因：" + "; ".join(reasons) + "。")
++        lines.append("- Failed criteria: " + "; ".join(reasons) + ".")
+     lines += [
+         "",
+-        "## 6. 叠加层",
+-        "",
+-        f"- 使用坐标范围：lon [{xlim[0]:.2f}, {xlim[1]:.2f}]，lat [{ylim[0]:.2f}, {ylim[1]:.2f}]。",
+-        "- 叠加层按真实经纬度输出，Figure 13 的错误刻度必须由作者修正后再对齐。",
+-        "- wells 层：标定井为黑色实心圆，按取心点数三级大小；logs-only 为黑色空心圆。",
+-        "- risk-points 层：标定井以 cividis 填色；logs-only 保持空心几何，以 cividis 边线颜色编码风险。",
+-        "- 未生成 risk-surface 层的组合不得在 CDR 中人工补色。",
+-        "",
+-        "## 7. 井名对照",
++        "## 6. Overlay layers",
++        "",
++        f"- Coordinate range: longitude [{xlim[0]:.2f}, {xlim[1]:.2f}], lat [{ylim[0]:.2f}, {ylim[1]:.2f}].",
++        "- Overlays use actual longitude/latitude. Register them against the author-prepared Fig. 11 coordinate axes.",
++        "- Well layer: calibration wells are filled black circles in three core-count sizes; logs-only wells are open black circles.",
++        "- Risk-point layer: cividis-filled calibration wells; open logs-only markers with cividis outlines encode risk.",
++        "- Do not manually add risk surfaces in artwork for combinations lacking an admitted surface.",
++        "",
++        "## 7. Well-ID mapping",
+         "",
+         "| public well_id | anonymous ID |",
+         "|---|---|",
+@@ -1014,7 +1014,7 @@
+         lines.append(f"| {row.well_id} | {row.well_anon} |")
+     lines += [
+         "",
+-        "## 8. 文件清单",
++        "## 8. File list",
+         "",
+         "- `Table_S27_well_level_map_inputs.csv`",
+         "- `Table_S28_well_level_conformal_risk.csv`",
+@@ -1024,10 +1024,10 @@
+         "- `overlay_risk_points_<target>.svg/png`",
+         "- `overlay_registration_check.png`",
+         "- `legend_risk_colorbar.svg`",
+-        "- `qa/variograms_contact_sheet.png` 与灰度版",
+-        "- `qa/risk_points_contact_sheet.png` 与灰度版",
+-        "",
+-        "所有输出均为新增文件；未修改现有 CSV、脚本、Figure 13 或手稿 `.tex`。",
++        "- qa/variograms_contact_sheet.png and grayscale version",
++        "- qa/risk_points_contact_sheet.png and grayscale version",
++        "",
++        "Outputs are additional files; existing CSVs, scripts, author Fig. 11 artwork and manuscript TeX are unchanged.",
+     ]
+     (output / "report_reliability_map_upgrade.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+ 
+--- paper/corrected_scripts/run_table_s27_to_s29_well_level_risk_v_prev.py (before)
++++ paper/corrected_scripts/run_table_s27_to_s29_well_level_risk_v_prev.py (English)
+@@ -914,22 +914,22 @@
+     anon_map: pd.DataFrame,
+ ) -> None:
+     lines = [
+-        "# 可信度地图高分辨率化计算报告",
+-        "",
+-        "## 1. 数据定位",
+-        "",
+-        f"- 模型就绪工作簿：`{workbook}`",
++        "# High-resolution reliability map-input calculations",
++        "",
++        "## 1. Data locations",
++        "",
++        f"- Model-ready workbook: `{workbook}`",
+         f"- MD5：`{workbook_md5}`",
+     ]
+     for name, shape, columns in sheet_details:
+-        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns；字段：{', '.join(columns)}")
++        lines.append(f"- Sheet `{name}`：{shape[0]} rows x {shape[1]} columns; fields: {', '.join(columns)}")
+     lines += [
+-        "- 井名通过批准映射表转换为公开罗马化编号；`L1` 与 S25 中 `Le1` 的一对一别名已显式记录，未修改任何源文件。",
+-        f"- Layer 1 输出：{len(s27)} rows，双目标各 {len(s27) // 2} 口井。标定井 feature_dist 保持为空。",
+-        "",
+-        "## 2. Layer 2 复现门",
+-        "",
+-        "正文锚定 coverage 的统计口径是模型-外层井折 coverage 的简单平均；另列池化样本比例供审计，二者不可混用。",
++        "- Approved mapping converts wells to public romanized IDs. The L1/Le1 alias in S25 is documented explicitly; source files are unchanged.",
++        f"- Layer 1 output: {len(s27)} rows, each target has {len(s27) // 2} wells. Calibration-well feature_dist remains blank.",
++        "",
++        "## 2. Layer 2 reproduction gates",
++        "",
++        "Coverage anchors use the simple mean over model/outer-well-fold coverages. Pooled sample coverage is reported separately; these conventions must not be interchanged.",
+         "",
+         "| target | models | fold-mean coverage | anchor | delta | pooled-sample coverage | fold-mean width | gate |",
+         "|---|---|---:|---:|---:|---:|---:|---|",
+@@ -942,26 +942,26 @@
+         )
+     lines += [
+         "",
+-        "Layer 2 的 logs-only 预测模型在全部有标签样本上重拟合；q90 仍由 seed=42 的按井 25% 校准划分获得。标定井风险使用严格 LOWO 留出预测，避免训练内风险被低估。三个 canonical 模型分别计算，最后在井级取中位数。",
+-        "",
+-        "## 3. 全局风险尺度",
+-        "",
+-        "对每个 target-model 的全部标定井留出样本与 logs-only 样本统一计算百分位，权重固定为 interval width 0.55、domain kNN 0.25、missing risk 0.10、quality risk 0.10。quality risk 恒为 0.1，保留用于协议一致性，但不贡献排序信息。",
++        "Layer 2 logs-only models refit all labelled samples. q90 uses a 25% calibration-well split with seed 42. Strict LOWO held-out predictions prevent underestimated calibration-well risk. Compute each of the three canonical models, then take the well-level median.",
++        "",
++        "## 3. Global risk scale",
++        "",
++        "For each target/model, rank all calibration-well held-out and logs-only samples together. Fixed weights are width .55, domain kNN .25, missing risk .10 and quality risk .10. Constant quality risk .1 preserves the protocol but carries no ordering information.",
+     ]
+     audit = ranked.copy()
+     audit["rank_delta"] = audit.composite_risk_global - audit.composite_risk_fold_local
+     example = audit.loc[audit.rank_delta.abs().idxmax()]
+     lines.append(
+-        f"- 差异示例：{example.target}/{example.model}/{example.well_id} 的折内 composite risk = "
+-        f"{example.composite_risk_fold_local:.4f}，全局尺度 = {example.composite_risk_global:.4f}，"
+-        f"差值 = {example.rank_delta:+.4f}。"
++        f"- Example difference: {example.target}/{example.model}/{example.well_id} fold-local composite risk = "
++        f"{example.composite_risk_fold_local:.4f}, global scale = {example.composite_risk_global:.4f}, "
++        f"difference = {example.rank_delta:+.4f}."
+     )
+     lines += [
+-        f"- S28 行数：{len(s28)}；每个目标 {s28.groupby('target').size().to_dict()}。",
+-        "",
+-        "## 4. Layer 3 空间自相关检验",
+-        "",
+-        "Moran's I 使用行标准化的有向 kNN 权重，k=4 和 6，单侧正相关置换检验 999 次（seed=42）。经验变差函数按距离排序后等频分箱，每箱至少 10 对。预先固定的“上升后趋平”判据为：Spearman rho>0.5、前段斜率>0、末两箱/首两箱半方差比>=1.10、后段斜率绝对值<=前段的 0.5。",
++        f"- S28 rows: {len(s28)}, per target {s28.groupby('target').size().to_dict()}.",
++        "",
++        "## 4. Layer 3 spatial autocorrelation",
++        "",
++        "Moran's I uses row-normalized directed kNN weights for k=4 and 6, with 999 one-sided positive-correlation permutations (seed 42). Equal-frequency distance bins contain at least ten pairs. Predefined rise-to-sill criteria: Spearman rho>.5, positive initial slope, final-two/initial-two semivariance ratio >=1.10, and absolute late slope <=.5 times the initial slope.",
+         "",
+         "| target | zone | n | I4 | p4 | I6 | p6 | variogram | NN median km | interpolate |",
+         "|---|---|---:|---:|---:|---:|---:|---|---:|---|",
+@@ -975,16 +975,16 @@
+         )
+     allowed = s29[s29.interpolation_allowed]
+     denied = s29[~s29.interpolation_allowed]
+-    lines += ["", "## 5. 结论", ""]
++    lines += ["", "## 5. Conclusions", ""]
+     if allowed.empty:
+         lines.append(
+-            "六个 target-zone 组合均未同时满足预设三条判据，因此没有生成连续风险面，也没有放宽 k、p 值、分箱或变差函数判据。结果支持：可靠性主要由特征空间位置决定，而不是由地图邻近性自动决定。"
++            "None of the six target/zone combinations passes all predefined admission criteria, so no continuous risk surfaces are generated. k, p thresholds, bins and variogram criteria are unchanged. Reliability depends on feature-space position and cannot be inferred from geographic proximity alone."
+         )
+     else:
+         lines.append(
+-            "允许插值的组合："
++            "Combinations admitted for interpolation: "
+             + ", ".join(f"{row.target}/{row.zone_en}" for _, row in allowed.iterrows())
+-            + "。其余组合不插值。"
++            + ". Other combinations are not interpolated."
+         )
+     if not denied.empty:
+         reasons = []
+@@ -999,18 +999,18 @@
+             if row.n_wells < 15:
+                 failed.append("n<15")
+             reasons.append(f"{row.target}/{row.zone_en}: {', '.join(failed)}")
+-        lines.append("- 未通过原因：" + "; ".join(reasons) + "。")
++        lines.append("- Failed criteria: " + "; ".join(reasons) + ".")
+     lines += [
+         "",
+-        "## 6. 叠加层",
+-        "",
+-        f"- 使用坐标范围：lon [{xlim[0]:.2f}, {xlim[1]:.2f}]，lat [{ylim[0]:.2f}, {ylim[1]:.2f}]。",
+-        "- 叠加层按真实经纬度输出，Figure 13 的错误刻度必须由作者修正后再对齐。",
+-        "- wells 层：标定井为黑色实心圆，按取心点数三级大小；logs-only 为黑色空心圆。",
+-        "- risk-points 层：标定井以 cividis 填色；logs-only 保持空心几何，以 cividis 边线颜色编码风险。",
+-        "- 未生成 risk-surface 层的组合不得在 CDR 中人工补色。",
+-        "",
+-        "## 7. 井名对照",
++        "## 6. Overlay layers",
++        "",
++        f"- Coordinate range: longitude [{xlim[0]:.2f}, {xlim[1]:.2f}], lat [{ylim[0]:.2f}, {ylim[1]:.2f}].",
++        "- Overlays use actual longitude/latitude. Register them against the author-prepared Fig. 11 coordinate axes.",
++        "- Well layer: calibration wells are filled black circles in three core-count sizes; logs-only wells are open black circles.",
++        "- Risk-point layer: cividis-filled calibration wells; open logs-only markers with cividis outlines encode risk.",
++        "- Do not manually add risk surfaces in artwork for combinations lacking an admitted surface.",
++        "",
++        "## 7. Well-ID mapping",
+         "",
+         "| public well_id | anonymous ID |",
+         "|---|---|",
+@@ -1019,7 +1019,7 @@
+         lines.append(f"| {row.well_id} | {row.well_anon} |")
+     lines += [
+         "",
+-        "## 8. 文件清单",
++        "## 8. File list",
+         "",
+         "- `Table_S27_well_level_map_inputs.csv`",
+         "- `Table_S28_well_level_conformal_risk.csv`",
+@@ -1029,10 +1029,10 @@
+         "- `overlay_risk_points_<target>.svg/png`",
+         "- `overlay_registration_check.png`",
+         "- `legend_risk_colorbar.svg`",
+-        "- `qa/variograms_contact_sheet.png` 与灰度版",
+-        "- `qa/risk_points_contact_sheet.png` 与灰度版",
+-        "",
+-        "所有输出均为新增文件；未修改现有 CSV、脚本、Figure 13 或手稿 `.tex`。",
++        "- qa/variograms_contact_sheet.png and grayscale version",
++        "- qa/risk_points_contact_sheet.png and grayscale version",
++        "",
++        "Outputs are additional files; existing CSVs, scripts, author Fig. 11 artwork and manuscript TeX are unchanged.",
+     ]
+     (output / "report_reliability_map_upgrade.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+ 
+--- paper/corrected_scripts/T3c2_random_baseline_diagnosis.py (before)
++++ paper/corrected_scripts/T3c2_random_baseline_diagnosis.py (English)
+@@ -185,9 +185,9 @@
+         '',
+         '## Bug diagnosed in T3c',
+         '',
+-        'Claude审核的数学质疑成立。T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母，但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值。由于 0% 与 20% 的 model-fold 行集合不完全一致，随机均值会系统偏离 0%。这不是随机抽样本身发现了真实正收益，而是 baseline / eligible-unit universe 不一致造成的偏差。',
+-        '',
+-        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算，并以这同一批 units 的 0% MAE 作为 baseline。',
++        'Claude审核的数学质疑成立.T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母, 但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值.由于 0% 与 20% 的 model-fold 行集合不完全一致, 随机均值会系统偏离 0%.这不是随机抽样本身发现了真实正收益, 而是 baseline / eligible-unit universe 不一致造成的偏差.',
++        '',
++        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算, 并以这同一批 units 的 0% MAE 作为 baseline.',
+         '',
+         '## Corrected random-baseline results',
+         '',
+--- paper/corrected_scripts/T3c2_random_baseline_diagnosis_v_prev.py (before)
++++ paper/corrected_scripts/T3c2_random_baseline_diagnosis_v_prev.py (English)
+@@ -185,9 +185,9 @@
+         '',
+         '## Bug diagnosed in T3c',
+         '',
+-        'Claude审核的数学质疑成立。T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母，但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值。由于 0% 与 20% 的 model-fold 行集合不完全一致，随机均值会系统偏离 0%。这不是随机抽样本身发现了真实正收益，而是 baseline / eligible-unit universe 不一致造成的偏差。',
+-        '',
+-        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算，并以这同一批 units 的 0% MAE 作为 baseline。',
++        'Claude审核的数学质疑成立.T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母, 但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值.由于 0% 与 20% 的 model-fold 行集合不完全一致, 随机均值会系统偏离 0%.这不是随机抽样本身发现了真实正收益, 而是 baseline / eligible-unit universe 不一致造成的偏差.',
++        '',
++        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算, 并以这同一批 units 的 0% MAE 作为 baseline.',
+         '',
+         '## Corrected random-baseline results',
+         '',
+--- paper/corrected_scripts/T3c2_random_baseline_diagnosis.py (intermediate)
++++ paper/corrected_scripts/T3c2_random_baseline_diagnosis.py (English)
+@@ -185,9 +185,9 @@
+         '',
+         '## Bug diagnosed in T3c',
+         '',
+-        'Claude审核的数学质疑成立.T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母, 但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值.由于 0% 与 20% 的 model-fold 行集合不完全一致, 随机均值会系统偏离 0%.这不是随机抽样本身发现了真实正收益, 而是 baseline / eligible-unit universe 不一致造成的偏差.',
+-        '',
+-        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算, 并以这同一批 units 的 0% MAE 作为 baseline.',
++        'The mathematical review identified an invalid T3c v1 null distribution: its denominator used all canonical 0% MAE units, whereas random 20% retained MAE used only eligible model-fold units retaining at least five rows. Mismatched unit universes caused a systematic nonzero random benefit; this was baseline mismatch, not evidence of true random-rejection gain.',
++        '',
++        'T3c-2 correction: risk and random rejection use the same eligible model-fold units, whose 0% MAE also supplies the common baseline.',
+         '',
+         '## Corrected random-baseline results',
+         '',
+--- paper/corrected_scripts/T3c2_random_baseline_diagnosis_v_prev.py (intermediate)
++++ paper/corrected_scripts/T3c2_random_baseline_diagnosis_v_prev.py (English)
+@@ -185,9 +185,9 @@
+         '',
+         '## Bug diagnosed in T3c',
+         '',
+-        'Claude审核的数学质疑成立.T3c v1 的随机基线不是有效零分布：它用 canonical 的 0% MAE 作为分母, 但随机 20% 保留 MAE 只在“20% 后仍至少 5 个样本”的 eligible model-fold units 上求均值.由于 0% 与 20% 的 model-fold 行集合不完全一致, 随机均值会系统偏离 0%.这不是随机抽样本身发现了真实正收益, 而是 baseline / eligible-unit universe 不一致造成的偏差.',
+-        '',
+-        'T3c-2 修正：风险拒识和随机拒识都在同一批 eligible model-fold units 上计算, 并以这同一批 units 的 0% MAE 作为 baseline.',
++        'The mathematical review identified an invalid T3c v1 null distribution: its denominator used all canonical 0% MAE units, whereas random 20% retained MAE used only eligible model-fold units retaining at least five rows. Mismatched unit universes caused a systematic nonzero random benefit; this was baseline mismatch, not evidence of true random-rejection gain.',
++        '',
++        'T3c-2 correction: risk and random rejection use the same eligible model-fold units, whose 0% MAE also supplies the common baseline.',
+         '',
+         '## Corrected random-baseline results',
+         '',
+--- paper/corrected_scripts/run_table_s28_s29_risk_correction.py (earlier explanatory text)
++++ paper/corrected_scripts/run_table_s28_s29_risk_correction.py (current rank convention)
+@@ -708,7 +708,7 @@
+         "",
+         report_table(width_report),
+         "",
+-        "The quality-risk input is exactly 0.1 for every sample. It is retained at weight 0.10 as a constant mid-rank (0.5), so it adds a constant offset and contributes nothing to ordering.",
++        "The quality-risk input is exactly 0.1 for every sample. Its average percentile rank is (n+1)/(2*n) within each target, so the retained 0.10 weight adds a constant offset and contributes nothing to ordering.",
+     ]
+     if stopped_at_width_gate:
+         lines.extend(

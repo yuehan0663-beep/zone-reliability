@@ -1,0 +1,16 @@
+﻿group,variable,source_column,n_nonmissing,mean,median,std,p25,p75
+North,DEN,DEN,93,2.6532,2.64764,0.0486125,2.62117,2.69039
+North,quartz,quartz_pct,58,40.0667,40.6955,19.8981,25.0985,55.975
+North,carbonate_calcite_plus_dolomite,calcite+dolomite,58,33.9198,25.6215,26.8001,11.125,46.199
+North,clay,clay_pct,52,16.8849,16.664,11.6378,7.76175,22.5789
+North,pyrite,pyrite_pct,54,2.24046,1.7,1.91436,0.899,2.81044
+Central+South,DEN,DEN,143,2.64897,2.67439,0.0820181,2.60872,2.69837
+Central+South,quartz,quartz_pct,57,36.0179,34.5,12.8695,29.2794,42.2
+Central+South,carbonate_calcite_plus_dolomite,calcite+dolomite,62,26.9777,22.2784,18.2352,14.6452,36.4
+Central+South,clay,clay_pct,58,28.4717,29.5775,10.1638,23.95,35.375
+Central+South,pyrite,pyrite_pct,56,2.4458,1.827,3.34048,1.07193,2.60615
+North_minus_CentralSouth,DEN,DEN,93/143,0.00422892,-0.026746,,,
+North_minus_CentralSouth,quartz,quartz_pct,58/57,4.0488,6.1955,,,
+North_minus_CentralSouth,carbonate_calcite_plus_dolomite,calcite+dolomite,58/62,6.94203,3.3431,,,
+North_minus_CentralSouth,clay,clay_pct,52/58,-11.5868,-12.9135,,,
+North_minus_CentralSouth,pyrite,pyrite_pct,54/56,-0.205342,-0.127,,,

@@ -1,0 +1,47 @@
+# Every research script retains its own random state; no global override.
+model_pool:
+  seed: 42
+  source: run_full_condition_evaluation.py
+conformal_calibration:
+  seed: 42
+  source: run_full_condition_evaluation.py
+recalibration:
+  seed: 20260613
+  metric_bootstrap_replicates: 400
+  benefit_bootstrap_replicates: 500
+  source: run_within_zone_recalibration.py
+zone_skill:
+  seed: 20260613
+  bootstrap_replicates: 500
+  source: run_zone_skill_criterion.py
+random_rejection:
+  seed: 20260629
+  random_replicates: 5000
+  source: T3c2_random_baseline_diagnosis.py
+learning_curve_error_resampling:
+  seed: 42
+  draws_per_subset_size: 200
+  source: Figure_13_learning_curve_guidance_script.py
+synthetic:
+  seed: 42
+archived_script_constants:
+  run_adaptive_rejection_budget.py:
+    SEED: 20260701
+    BOOTSTRAP_N: 20000
+  run_adaptive_rejection_search.py:
+    BOOTSTRAP_N: 20000
+  run_protocol_sensitivity.py:
+    SEED: 42
+    BOOTSTRAP_SEED: 20260613
+    BOOTSTRAP_N: 500
+  run_schmoker_baseline_sensitivity.py:
+    BOOTSTRAP_SEED: 20260613
+    BOOTSTRAP_N: 500
+  run_shap_stability.py:
+    SEED: 42
+  run_table_s28_s29_risk_correction.py:
+    PERMUTATIONS: 999
+    RANDOM_SEED: 42
+  run_zone_skill_criterion.py:
+    BOOTSTRAP_SEED: 20260613
+    BOOTSTRAP_REPLICATES: 500

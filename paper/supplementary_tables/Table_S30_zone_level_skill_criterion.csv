@@ -1,0 +1,10 @@
+﻿target,zone_en,predictor_group,model,n_points,n_wells,MAE_model,MAE_zone_mean,delta_MAE,relative_improvement_pct,ci_low_pct,ci_high_pct,spearman_model,skill_class
+toc_pct,North,A_fixed_backbone,ExtraTrees,93,8,0.357096,0.242035,0.115061,-47.538873,-233.413215,-12.690574,0.009669,no_skill
+toc_pct,Central,A_fixed_backbone,ExtraTrees,84,9,0.249091,0.274715,-0.025624,9.327389,-14.991867,41.553984,0.216624,skill_directional
+toc_pct,South,A_fixed_backbone,ExtraTrees,114,15,0.308579,0.254513,0.054066,-21.242964,-57.578466,-6.642581,-0.254361,no_skill
+toc_pct,North,B_table3_best_envelope,SVR_RBF,93,8,0.353384,0.242035,0.111349,-46.005199,-139.500429,-27.154980,-0.030320,no_skill
+toc_pct,Central,B_table3_best_envelope,SVR_RBF,84,9,0.224971,0.274715,-0.049744,18.107526,6.221107,31.720884,0.582720,skill_CI_robust
+toc_pct,South,B_table3_best_envelope,SVR_RBF,114,15,0.318602,0.254513,0.064088,-25.180723,-48.894314,-4.791908,-0.069749,no_skill
+total_gas_m3_t,North,A_fixed_backbone_and_B_table3_best,RF,44,5,0.452396,0.594908,-0.142512,23.955235,11.401856,65.856971,0.494715,skill_CI_robust
+total_gas_m3_t,Central,A_fixed_backbone_and_B_table3_best,RF,61,11,0.284151,0.301811,-0.017659,5.851080,-14.746474,27.278582,0.181967,skill_directional
+total_gas_m3_t,South,A_fixed_backbone_and_B_table3_best,RF,50,10,0.464374,0.428012,0.036362,-8.495592,-23.613433,7.813744,-0.155054,no_skill
