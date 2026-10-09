@@ -4,7 +4,7 @@ Code, a fully simulated example, and anonymous derived data supporting:
 
 **A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Ordos Basin, China**
 
-Target journal: *Computers & Geosciences*. Code is MIT licensed; public derived
+Code is MIT licensed; public derived
 CSV tables and synthetic data are CC BY 4.0 licensed (see LICENSE-data).
 
 ## Install
