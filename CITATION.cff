@@ -3,7 +3,7 @@ message: "Please cite the associated paper and this software when using this wor
 title: "A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Wulalike Formation, Ordos Basin, China"
 type: software
 repository-code: "https://github.com/yuehan0663-beep/zone-reliability"
-version: 0.1.2
+version: 0.1.3
 date-released: 2026-10-10
 license: MIT
 abstract: "Leakage-controlled validation, attribution, uncertainty, rejection and within-zone recalibration for well-log regression."

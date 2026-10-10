@@ -11,7 +11,7 @@ def pick(table,**conditions):
 def check(value,expected,tolerance):
     assert abs(float(value)-expected)<=tolerance,(value,expected,tolerance)
 def main():
-    assert len(list((ROOT/'supplementary_tables').glob('Table_S*.csv')))==36
+    assert len(list((ROOT/'supplementary_tables').glob('Table_S*.csv')))==37
     check(pick('Table_S1_full_model_rank.csv',target='toc_pct',model='ExtraTrees',cv_scheme='LOZO')['pooled_R2'],-.786,.005)
     check(pick('Table_S1_full_model_rank.csv',target='total_gas_m3_t',model='RF',cv_scheme='LOZO')['pooled_R2'],.092,.005)
     check(pick('Table_S14_rejection_vs_random_baseline.csv',target='total_gas_m3_t',method='global')['risk_improvement_pct_same_eligible_units'],6.62913952092778,1e-6)
@@ -34,5 +34,5 @@ def main():
     check(toc['improvement_ci_high_pct'],25.2249995572,.01)
     for p in (ROOT/'supplementary_tables').glob('*.csv'):
         assert p.read_bytes()==(DATA/p.name).read_bytes(),p.name
-    print('PUBLIC PAPER TABLE CHECK PASS: 36 current CSVs, corrected rejection and eight attribution scalars')
+    print('PUBLIC PAPER TABLE CHECK PASS: 37 current CSVs (S1-S30 and S34), corrected rejection and eight attribution scalars')
 if __name__=='__main__':main()

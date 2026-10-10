@@ -52,10 +52,10 @@ CSV versions are retained in `paper/previous_release_v5/`.
 | Figure_05_log_toc_crossplots | Fig. 3 | Log–TOC crossplots |
 | Figure_06_feature_drift | Fig. 4 | Zonal log drift |
 | Figure_08_validation_degradation plus TOC residual panels | Fig. 5 | Validation decline / TOC LOZO residuals |
-| Figure_09_conformal_coverage_width + Figure_10_rejection_curves | Fig. 6 | Conformal intervals / rejection |
-| Figure_11_zone_reliability | Fig. 7 | Zone coverage / rejection |
-| Figure_12_proxy_gold_correction + Figure_13_learning_curve_guidance | Fig. 8 | Within-zone correction / learning curve |
-| Figure_14_shap_feature_importance / shap_matrix/Figure_SHAP_matrix | Fig. 9 | SHAP matrix |
+| Figure_14_shap_feature_importance / shap_matrix/Figure_SHAP_matrix | Fig. 6 | SHAP matrix |
+| Figure_09_conformal_coverage_width + Figure_10_rejection_curves | Fig. 7 | Conformal intervals / rejection |
+| Figure_11_zone_reliability | Fig. 8 | Zone coverage / rejection |
+| Figure_12_proxy_gold_correction + Figure_13_learning_curve_guidance | Fig. 9 | Within-zone correction / learning curve |
 | build_residual_geology.py / S23 | Fig. 10 | TOC LOZO residual / geological covariates |
 | Historical Figure 13 decision-map prose | Fig. 11 | Author artwork; CSV inputs only |
 | Figure_04_representative_logs | Fig. S2 | Representative log tracks |

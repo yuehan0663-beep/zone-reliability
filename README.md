@@ -80,7 +80,8 @@ author of the associated manuscript.
 
 This repository provides anonymized derived data in
 [`paper/data_derived/`](paper/data_derived/) and the CSV files for supplementary
-Tables S1–S30 in [`paper/supplementary_tables/`](paper/supplementary_tables/).
+Tables S1–S30 and S34 in [`paper/supplementary_tables/`](paper/supplementary_tables/).
+Tables S31–S33 are available only in the supplementary-material PDF.
 The synthetic example contains no real log or core rows.
 
 ## Reproducibility

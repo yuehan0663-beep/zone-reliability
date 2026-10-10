@@ -64,7 +64,7 @@ def draw(number,out,raw=None):
         axes[1].axhline(0,color='.6',lw=.7)
         axes[1].set(xticks=range(3),xticklabels=ZONES,ylabel='Mean TOC LOZO residual (wt.%)')
         name='fig05_validation_residuals'
-    elif number=='06':
+    elif number=='07':
         d=table('Table_S2_conformal_summary_by_protocol.csv');reject=table('Table_S3_rejection_curves.csv')
         fig,axes=plt.subplots(1,2,figsize=(7.2,3.4),layout='constrained')
         for target,marker in [('toc_pct','o'),('total_gas_m3_t','s')]:
@@ -75,8 +75,8 @@ def draw(number,out,raw=None):
             axes[1].plot(g.reject_frac,g.MAE,color=COLORS[target],marker=marker,label=target)
         axes[0].set(xlabel='Mean interval width (target units)',ylabel='Coverage',ylim=(0,1))
         axes[1].set(xlabel='Rejection fraction',ylabel='Retained MAE (target units)')
-        axes[0].legend(loc='lower right',fontsize=7);name='fig06_intervals_rejection'
-    elif number=='07':
+        axes[0].legend(loc='lower right',fontsize=7);name='fig07_intervals_rejection'
+    elif number=='08':
         d=table('zone_reliability_summary.csv')
         fig,axes=plt.subplots(1,2,figsize=(7.2,3.2),layout='constrained')
         for target,offset,marker in [('toc_pct',-.08,'o'),('total_gas_m3_t',.08,'s')]:
@@ -85,8 +85,8 @@ def draw(number,out,raw=None):
                 ax.scatter(np.arange(3)+offset,g[col],color=COLORS[target],marker=marker,label=target)
         for ax,label in zip(axes,['Coverage','Rejection rate']):
             ax.set(xticks=range(3),xticklabels=ZONES,ylabel=label,ylim=(0,1))
-        axes[0].legend(fontsize=7);name='fig07_zone_reliability'
-    elif number=='08':
+        axes[0].legend(fontsize=7);name='fig08_zone_reliability'
+    elif number=='09':
         d=table('Table_S4_recalibration_all_methods.csv');curve=table('Table_S8_learning_curve_guidance.csv')
         fig,axes=plt.subplots(1,2,figsize=(8,3.6),layout='constrained')
         for target,proxy,offset,marker in [('TOC','schmoker_toc_proxy',-.08,'o'),('total_gas','gas_total_proxy_quant',.08,'s')]:
@@ -97,8 +97,8 @@ def draw(number,out,raw=None):
             axes[1].plot(c.training_wells,c.mae_mean,color=COLORS[target],marker=marker,label=target)
         axes[0].set(xticks=range(len(methods)),xticklabels=[m.split('_')[0] for m in methods],ylabel='North within-zone MAE')
         axes[1].set(xlabel='Sampled training wells',ylabel='Resampled-error guidance MAE')
-        axes[0].legend(fontsize=7);name='fig08_recalibration_learning'
-    elif number=='09':
+        axes[0].legend(fontsize=7);name='fig09_recalibration_learning'
+    elif number=='06':
         d=table('Table_S22a_perfold_importance.csv');d=d[d.feature_set=='full']
         matrix=d.groupby(['target','cv_scheme','feature']).importance.mean().unstack('feature')
         matrix=matrix.div(matrix.sum(axis=1),axis=0)
@@ -110,7 +110,7 @@ def draw(number,out,raw=None):
                yticklabels=[f'{target} {scheme}' for target,scheme in matrix.index])
         plt.setp(ax.get_xticklabels(),rotation=90,ha='center',fontsize=8)
         fig.colorbar(im,ax=ax,label='Normalized fold-mean absolute SHAP')
-        name='fig09_shap_matrix'
+        name='fig06_shap_matrix'
     elif number=='10':
         d=table('Table_S23_residual_geology_correlations.csv')
         d=d[(d.level=='point')&(d.analysis=='Spearman')&(d.metric=='signed residual')]
