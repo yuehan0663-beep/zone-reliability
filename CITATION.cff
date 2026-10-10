@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: "Please cite the associated paper and this software when using this workflow."
-title: "A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Ordos Basin, China"
+title: "A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Wulalike Formation, Ordos Basin, China"
 type: software
 repository-code: "https://github.com/yuehan0663-beep/zone-reliability"
-version: 0.1.1
-date-released: 2026-10-09
+version: 0.1.2
+date-released: 2026-10-10
 license: MIT
 abstract: "Leakage-controlled validation, attribution, uncertainty, rejection and within-zone recalibration for well-log regression."
 keywords:

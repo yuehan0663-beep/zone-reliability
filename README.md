@@ -5,7 +5,7 @@
 A Python workflow for assessing the reliability of well-log predictions across
 structural zones, accompanying:
 
-**A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Ordos Basin, China**
+**A workflow for bounding the reliability of well-log machine-learning predictions across fault-bounded structural zones: Application to shale TOC and gas content in the Wulalike Formation, Ordos Basin, China**
 
 ## Overview
 
