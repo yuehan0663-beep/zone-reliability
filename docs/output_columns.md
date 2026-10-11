@@ -295,8 +295,8 @@ ending `_pct` are percentages. `risk_inflated` means distance-inflated.
 |---|---|
 | target | Target column or display identifier |
 | zone_en | English structural-zone label |
-| predictor_group | Fixed backbone or best-model performance envelope |
-| model | Fixed model family |
+| predictor_group | Fixed backbone or best-model performance envelope; A_user_selected for the first-ranked model when extra_models are supplied |
+| model | Evaluated model family or custom regressor name |
 | n_points | Held-out samples entering zone-skill comparison |
 | n_wells | Distinct wells entering record/group |
 | MAE_model | Model MAE on the matched zone LOWO rows |

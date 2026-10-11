@@ -16,8 +16,9 @@ METHOD = 'shap'
 LOG_COLS = ['GR', 'AC', 'DEN', 'CNL', 'RT']
 NUM_COLS = LOG_COLS + ['pressure_coeff', 'formation_top_md', 'formation_bottom_md', 'max_burial_top']
 CAT_COLS = ['layer', 'lithology', 'diagenesis_category']
-ZONE_ORDER = ['\u5317', '\u4e2d', '\u5357']
-ZONE_EN = dict(zip(ZONE_ORDER, ['North', 'Central', 'South']))
+from .domains import ordered_zones
+from .constants import ZONE_EN as _ZONE_EN
+ZONE_EN = {k:v for k,v in _ZONE_EN.items() if k != v}
 def preprocessor(num_cols: list[str], cat_cols: list[str]) -> ColumnTransformer:
     transformers = []
     if num_cols:
@@ -68,7 +69,7 @@ def split_iter(df: pd.DataFrame, scheme: str):
             if len(te) and len(tr) >= 10:
                 yield str(well), tr, te
     elif scheme == "LOZO":
-        for zone in ZONE_ORDER:
+        for zone in ordered_zones(df, validate_lozo=True):
             te = np.where(df["zone"].to_numpy() == zone)[0]
             tr = np.where(df["zone"].to_numpy() != zone)[0]
             if len(te) and len(tr) >= 10:
@@ -79,7 +80,7 @@ def split_iter(df: pd.DataFrame, scheme: str):
 def anonymizers(df: pd.DataFrame) -> tuple[dict[str, str], dict[str, str]]:
     wells = sorted(str(w) for w in df["well"].dropna().unique())
     well_map = {well: f"well_anon_{i:03d}" for i, well in enumerate(wells, 1)}
-    zone_map = {zone: f"zone_en_{ZONE_EN.get(zone, zone)}" for zone in ZONE_ORDER}
+    zone_map = {zone: f"zone_en_{ZONE_EN.get(zone, zone)}" for zone in ordered_zones(df)}
     return well_map, zone_map
 
 def aggregate_shap(

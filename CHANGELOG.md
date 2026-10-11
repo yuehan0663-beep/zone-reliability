@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.4 — 2026-10-11
+
+- Accept unfitted, cloneable user regressors with the same training-fold
+  preprocessing, validation ranking and top-three interval/rejection selection.
+- Infer arbitrary domain labels and counts for LOZO, SHAP and logs-only ablation;
+  retain the paper's canonical order. Require at least two zones and warn at two.
+- Allow optional tree ensemble attribution backbones without an explainer fallback.
+- Make pressure and porosity columns optional; skip unavailable gas physical
+  proxies with a warning. Add `run_recalibration=False` to skip physical proxies
+  and C0–C4 while retaining intervals/rejection and three-action decisions.
+- Default algorithms, parameters, seeds and paper numerical files are unchanged
+  from 0.1.3. Target column names remain `toc_pct` / `total_gas_m3_t`.
+
 ## 0.1.1 — 2026-10-09
 
 Documentation, archive naming and metadata cleanup. Computational code and

@@ -6,7 +6,7 @@ import pandas as pd
 from .models import GroupMeanRegressor
 BOOTSTRAP_REPLICATES=500
 BOOTSTRAP_SEED=20260613
-ZONES=("North","Central","South")
+from .domains import ordered_zones
 KEY_FIELDS=("sample_anon","well_anon","zone_en","target","cv_scheme","fold_label_anon")
 # Source: run_zone_skill_criterion.py:60
 def percentile(values: list[float], q: float) -> float:
@@ -131,7 +131,7 @@ def calculate_row(rows: list[dict[str, object]], target: str, zone: str, predict
     result = {'target': target, 'zone_en': zone, 'predictor_group': predictor_group, 'model': model, 'n_points': len(rows), 'n_wells': len({str(row['well_anon']) for row in rows}), 'MAE_model': f'{model_mae:.6f}', 'MAE_zone_mean': f'{baseline_mae:.6f}', 'delta_MAE': f'{model_mae - baseline_mae:.6f}', 'relative_improvement_pct': f'{improvement:.6f}', 'ci_low_pct': f'{ci_low:.6f}', 'ci_high_pct': f'{ci_high:.6f}', 'spearman_model': f'{spearman(y_true, model_pred):.6f}', 'skill_class': classify(improvement, ci_low)}
     return (result, equivalence_error)
 
-def zone_skill(predictions):
+def zone_skill(predictions, selected_models=None):
     """Recompute S30 paired zone-mean skill with its original RNG sequence.
 
     Optional sample_anon/well_anon columns control the published bootstrap
@@ -144,8 +144,10 @@ def zone_skill(predictions):
     lowo=frame[frame.cv_scheme=='LOWO'].to_dict('records')
     available=set(frame.model)
     specs=[('toc_pct','A_fixed_backbone','ExtraTrees'),('toc_pct','B_table3_best_envelope','SVR_RBF'),('total_gas_m3_t','A_fixed_backbone_and_B_table3_best','RF')]
+    if selected_models is not None:
+        specs=[(target, 'A_user_selected', model) for target, model in selected_models.items()]
     rng=random.Random(BOOTSTRAP_SEED);out=[]
-    zones=ZONES if set(frame.zone)<=set(ZONES) else tuple(sorted(frame.zone.unique()))
+    zones=ordered_zones(frame)
     for target,group,model in specs:
         if model not in available or not any(r['target']==target for r in lowo):continue
         for zone in zones:

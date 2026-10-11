@@ -12,7 +12,7 @@ from sklearn.model_selection import KFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 SCHEMES = ['random', 'LOWO', 'LOZO']
-ZONE_ORDER = ['\u5317', '\u4e2d', '\u5357']
+from .domains import ordered_zones
 def preprocessor(num, cat):
     trs=[]
     if num:
@@ -38,7 +38,7 @@ def split_iter(df, scheme):
             if len(te) and len(tr)>=10:
                 yield str(w), tr, te
     elif scheme == 'LOZO':
-        for z in ZONE_ORDER:
+        for z in ordered_zones(df, validate_lozo=True):
             te=np.where(df['zone'].to_numpy()==z)[0]; tr=np.where(df['zone'].to_numpy()!=z)[0]
             if len(te) and len(tr)>=10:
                 yield str(z), tr, te
@@ -59,11 +59,11 @@ def metric_row(y,p):
         'Spearman': spearman_safe(y,p)
     }
 
-def run_eval(df, dataset, target, target_label, model_name, feature_set, num_cols, cat_cols):
+def run_eval(df, dataset, target, target_label, model_name, feature_set, num_cols, cat_cols, model=None):
     rows=[]; preds=[]
     x=df[num_cols + cat_cols].copy()
     y=df[target].astype(float).to_numpy()
-    model=model_obj(model_name)
+    model=model_obj(model_name) if model is None else model
     for scheme in SCHEMES:
         for fold,tr,te in split_iter(df, scheme):
             pipe=Pipeline([('pre', preprocessor(num_cols, cat_cols)), ('model', clone(model))])

@@ -58,6 +58,26 @@ tables = run_workflow(data, {'fast': True, 'run_attribution': True})
 tables['decision_matrix'].to_csv('decisions.csv', index=False)
 ```
 
+Custom regressors and arbitrary structural-zone labels use the same fold-contained
+preprocessing and validation. For example, supply a CSV whose `fault_block` column
+contains four blocks `F1`, `F2`, `F3`, `F4` (one stable block per well):
+
+```python
+from sklearn.neighbors import KNeighborsRegressor
+from zonerel.io import read_dataset
+from zonerel.pipeline import run_workflow
+data = read_dataset('four_blocks.csv', group_col='fault_block')
+tables = run_workflow(data, {'fast': True, 'extra_models': {'my_knn': KNeighborsRegressor(n_neighbors=5)}})
+```
+
+The custom estimator must be unfitted and scikit-learn cloneable. It joins the
+validation ranking and can enter the top three interval/rejection models.
+`pressure_coeff` and `porosity_pct` are optional; missing gas-proxy inputs skip
+gas physical recalibration with a warning. `run_recalibration=False` skips all
+physical proxies and C0–C4 while retaining intervals and risk rejection.
+Attribution remains optional and requires TreeExplainer-compatible tree ensembles;
+its defaults remain ExtraTrees for TOC and RandomForest for gas.
+
 See [the user guide](docs/user_guide.md) for input columns, units, grouping,
 options, outputs, and expected behavior.
 

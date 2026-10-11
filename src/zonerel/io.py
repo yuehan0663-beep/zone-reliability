@@ -7,12 +7,12 @@ from .constants import LOG_COLS, ZONE_EN
 def validate_dataset(df, group_col='zone', well_col='well'):
     """Return a validated copy, mapping North/Central/South Chinese zone labels.
 
-    Required: group, well, depth_md, GR/AC/DEN/CNL/RT, pressure_coeff,
-    porosity_pct, and at least one target. Optional geological descriptors are
+    Required: group, well, depth_md, GR/AC/DEN/CNL/RT and at least one
+    target. pressure_coeff and porosity_pct are optional gas-proxy inputs. Optional geological descriptors are
     selected when present. Original identities are never rewritten on disk.
     Configurable group and well columns are renamed only in the returned copy.
     """
-    required=[group_col,well_col,'depth_md',*LOG_COLS,'pressure_coeff','porosity_pct']
+    required=[group_col,well_col,'depth_md',*LOG_COLS]
     missing=[c for c in required if c not in df]
     if missing:raise ValueError('Missing required columns: '+', '.join(missing))
     if not any(c in df for c in ['toc_pct','total_gas_m3_t']):raise ValueError('At least one target column is required')

@@ -59,12 +59,12 @@ def transformed(pipe, x):
     """transformed: retained research implementation; paper §3.4–3.5. Inputs and outputs follow the named arguments and return statement; see module provenance."""
     return pipe.named_steps['pre'].transform(x) if isinstance(pipe, Pipeline) else x.select_dtypes(include=[np.number]).fillna(0).to_numpy()
 
-def conformal_rejection(datasets, summary, finite_sample=False):
+def conformal_rejection(datasets, summary, finite_sample=False, extra_models=None):
     """Split-conformal and rejection; paper §3.4–3.5. risk_inflated is the distance-inflated alias. Five-neighbor distances are min-max normalized on current test-fold input features, never labels; calibration comes only from outer training. Inputs and outputs follow the named arguments and return statement; see module provenance."""
     conf = []
     cpreds = []
     rej = []
-    models = regressor_pool()
+    models = regressor_pool(extra_models=extra_models)
     fracs = [i / 100 for i in range(0, 41, 5)]
     for name, target, df in datasets:
         mnames = choose_models(summary, name)

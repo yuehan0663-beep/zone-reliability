@@ -23,19 +23,19 @@ from .models import regressor_pool,make_pipe
 from .metrics import metric_row
 from .splits import split_iter
 # Source: run_full_condition_evaluation.py:168
-def eval_baselines(datasets, model_names=None, progress=None):
+def eval_baselines(datasets, model_names=None, progress=None, extra_models=None):
     """eval_baselines: retained research implementation; paper §3.3. Inputs and outputs follow the named arguments and return statement; see module provenance."""
     rows = []
     preds = []
     errors = []
-    models = regressor_pool(model_names)
+    models = regressor_pool(model_names, extra_models)
     for name, target, df in datasets:
         num = [c for c in NUM_COLS if c in df.columns]
         cat = [c for c in CAT_COLS if c in df.columns]
         x_model = df[num + cat].copy()
         x_all = df[num + cat + ['zone']].copy()
         y = df[target].astype(float).to_numpy()
-        for model_name in (model_names or MODEL_ORDER):
+        for model_name in (list(models) if extra_models else (model_names or MODEL_ORDER)):
             if progress is not None:
                 progress(name, model_name)
             if model_name not in models:

@@ -62,7 +62,26 @@ def preprocessor(num, cat):
     return ColumnTransformer(trs, remainder='drop')
 
 # Source: run_full_condition_evaluation.py:115
-def regressor_pool(model_names=None):
+def validate_regressor(name, estimator):
+    """Validate an unfitted, cloneable fit/predict estimator without fitting it."""
+    if not callable(getattr(estimator, 'fit', None)) or not callable(getattr(estimator, 'predict', None)):
+        raise TypeError(f"Regressor {name!r} must implement callable fit and predict")
+    try:
+        clone(estimator)
+    except Exception as exc:
+        raise TypeError(f"Regressor {name!r} must be scikit-learn cloneable") from exc
+    from sklearn.utils.validation import check_is_fitted
+    from sklearn.exceptions import NotFittedError
+    try:
+        check_is_fitted(estimator)
+    except NotFittedError:
+        pass
+    else:
+        raise ValueError(f"Regressor {name!r} must be unfitted; supply a fresh estimator")
+    return estimator
+
+
+def regressor_pool(model_names=None, extra_models=None):
     """regressor_pool: retained research implementation; paper §3.3. Inputs and outputs follow the named arguments and return statement; see module provenance."""
     models = {'train_mean': DummyRegressor(strategy='mean'), 'zone_mean': GroupMeanRegressor('zone'), 'LinearRegression': LinearRegression(), 'Ridge': Ridge(alpha=1.0), 'Lasso': Lasso(alpha=0.01, max_iter=20000, random_state=42), 'ElasticNet': ElasticNet(alpha=0.01, l1_ratio=0.5, max_iter=20000, random_state=42), 'Huber': HuberRegressor(max_iter=2000), 'SVR_RBF': SVR(C=3.0, gamma='scale', epsilon=0.05), 'KNN': KNeighborsRegressor(n_neighbors=5, weights='distance'), 'RF': RandomForestRegressor(n_estimators=180, min_samples_leaf=3, random_state=42, n_jobs=-1), 'ExtraTrees': ExtraTreesRegressor(n_estimators=180, min_samples_leaf=3, random_state=42, n_jobs=-1), 'GBDT': GradientBoostingRegressor(random_state=42, n_estimators=180, learning_rate=0.04, max_depth=2), 'HistGBDT': HistGradientBoostingRegressor(random_state=42, learning_rate=0.04, max_leaf_nodes=15, l2_regularization=0.1)}
     if XGBRegressor is not None:
@@ -71,10 +90,21 @@ def regressor_pool(model_names=None):
         models['LightGBM'] = LGBMRegressor(n_estimators=180, learning_rate=0.04, num_leaves=15, min_child_samples=5, subsample=0.85, colsample_bytree=0.85, random_state=42, n_jobs=2, verbose=-1)
     if CatBoostRegressor is not None:
         models['CatBoost'] = CatBoostRegressor(iterations=180, depth=3, learning_rate=0.04, loss_function='RMSE', random_seed=42, verbose=False, allow_writing_files=False)
+    if extra_models is not None:
+        from collections.abc import Mapping
+        if not isinstance(extra_models, Mapping):
+            raise TypeError('extra_models must be a {name: estimator} mapping')
+        for name, estimator in extra_models.items():
+            if not isinstance(name, str) or not name:
+                raise ValueError('Custom regressor names must be nonempty strings')
+            if name in MODEL_ORDER:
+                raise ValueError(f"Custom regressor name {name!r} collides with a built-in model")
+            models[name] = validate_regressor(name, estimator)
     if model_names is not None:
         absent=set(model_names)-set(models)
         if absent:raise ImportError("Unavailable model libraries: "+", ".join(sorted(absent)))
-        return {name:models[name] for name in model_names}
+        names = list(dict.fromkeys([*model_names, *(extra_models or {})]))
+        return {name:models[name] for name in names}
     return models
 
 # Source: run_full_condition_evaluation.py:139

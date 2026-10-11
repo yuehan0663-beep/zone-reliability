@@ -350,12 +350,32 @@ def evaluate_zone(rows,target,proxy,method):
     if method not in METHODS:raise ValueError(method)
     return eval_zone(rows,target,proxy,method)
 
+def empty_recalibration():
+    """Header-preserving outputs when physical recalibration is skipped."""
+    common=['target','proxy','zone','zone_en']
+    return {
+        'metrics':pd.DataFrame(columns=common+['method','n','wells','pooled_R2','weighted_MAE','Spearman',
+            'pooled_R2_ci_low','pooled_R2_ci_high','weighted_MAE_ci_low','weighted_MAE_ci_high','Spearman_ci_low','Spearman_ci_high']),
+        'benefits':pd.DataFrame(columns=common+['wells','best_method','best_MAE','zone_mean_MAE',
+            'relative_MAE_improvement_vs_zonemean_pct','improvement_ci_low_pct','improvement_ci_high_pct','benefit_class','small_sample_note']),
+        'drift':pd.DataFrame(columns=common+['n','wells','spearman_proxy_gold','affine_slope','affine_intercept','drift_type']),
+        'predictions':pd.DataFrame(columns=common+['well','sample_id','method','observed','predicted',
+            'zone_mean_prediction','rejection_score','abs_error','zone_mean_abs_error']),
+        'rejection':pd.DataFrame(columns=common+['best_method','reject_pct','retain_pct','retained_n','retained_wells',
+            'corrected_MAE','zone_mean_MAE','relative_improvement_pct','same_retained_subset','risk_score'])}
+
+
 def recalibration_ladder(df,params=None):
     """Run original C0–C4 order and continuous bootstrap stream (§3.6).
 
     Returns metrics, selected benefits, drift typing, predictions and rejection.
     Density and porosity baselines use full-zone inputs, never target labels.
     """
+    import warnings
+    missing=[c for c in ['pressure_coeff','porosity_pct'] if c not in df]
+    if missing and 'total_gas_m3_t' in df and df.total_gas_m3_t.notna().any():
+        warnings.warn('Gas physical proxy skipped: missing '+', '.join(missing)+
+                      '; gas local_correction_robust is False.', UserWarning, stacklevel=2)
     global RNG
     RNG=random.Random(20260613)
     rows=[{k:(None if pd.isna(v) else v) for k,v in r.items()} for r in df.to_dict("records")]
@@ -367,6 +387,8 @@ def recalibration_ladder(df,params=None):
     rej = []
     benefit = []
     for tname, tcol, proxies in targets:
+        if missing and tname == 'total_gas':
+            continue
         for proxy in proxies:
             for z in sorted(set((r['zone'] for r in rows))):
                 zrows = [r for r in rows if r['zone'] == z and fnum(r.get(tcol)) is not None and (r.get(proxy) is not None) and math.isfinite(r.get(proxy))]
@@ -412,4 +434,9 @@ def recalibration_ladder(df,params=None):
                     cmae = mae(cy, cp)
                     ri = (bmae - cmae) / bmae * 100 if bmae > 0 else float('nan')
                     rej.append({'target': tname, 'proxy': proxy, 'zone': z, 'zone_en': ZONE_EN.get(z, z), 'best_method': best['method'], 'reject_pct': pct, 'retain_pct': 100 - pct, 'retained_n': len(idx), 'retained_wells': len(set((ww[i] for i in idx))), 'corrected_MAE': fmt(cmae), 'zone_mean_MAE': fmt(bmae), 'relative_improvement_pct': fmt(ri), 'same_retained_subset': 'yes', 'risk_score': 'proxy_distance_from_training_distribution'})
-    return {"metrics":pd.DataFrame(results),"benefits":pd.DataFrame(benefit),"drift":pd.DataFrame(drifts),"predictions":pd.DataFrame(preds),"rejection":pd.DataFrame(rej)}
+    tables={"metrics":pd.DataFrame(results),"benefits":pd.DataFrame(benefit),"drift":pd.DataFrame(drifts),"predictions":pd.DataFrame(preds),"rejection":pd.DataFrame(rej)}
+    if missing:
+        for key,empty in empty_recalibration().items():
+            if tables[key].empty:
+                tables[key]=empty
+    return tables

@@ -1,7 +1,7 @@
 """Original random/LOWO/LOZO folds (paper §3.3)."""
 import numpy as np
 from sklearn.model_selection import KFold
-from .constants import ZONE_ORDER
+from .domains import ordered_zones
 
 def split_iter(df, scheme, group_col='zone', well_col='well', zone_order=None):
     """Yield (fold label, train positions, test positions).
@@ -15,7 +15,9 @@ def split_iter(df, scheme, group_col='zone', well_col='well', zone_order=None):
     elif scheme in ['LOWO','LOZO']:
         col=well_col if scheme=='LOWO' else group_col
         groups=sorted(df[col].dropna().unique())
-        if scheme=='LOZO':groups=zone_order or (ZONE_ORDER if set(groups)<=set(ZONE_ORDER) else groups)
+        if scheme=='LOZO':
+            inferred=ordered_zones(df, group_col, validate_lozo=True)
+            groups=zone_order or inferred
         for group in groups:
             te=np.where(df[col].to_numpy()==group)[0];tr=np.where(df[col].to_numpy()!=group)[0]
             if len(te) and len(tr)>=10:yield str(group),tr,te
